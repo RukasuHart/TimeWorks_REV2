@@ -19,9 +19,63 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarEventListeners();
     adicionarEstilosTarefas();
 
-        setTimeout(() => {
+    setTimeout(() => {
         atualizarCalendario();
-    }, 100);
+
+        // --- CÓDIGO MOVIDO PARA DENTRO DO SETTIMEOUT ---
+        console.log("Tentando adicionar listener APÓS atualizar calendário...");
+
+        const todolistToggle = document.getElementById('todolist-toggle');
+        const mainCalendar = document.querySelector('main');
+
+        console.log("Elemento do Toggle Switch encontrado:", todolistToggle);
+        console.log("Elemento do Calendário (main) encontrado:", mainCalendar);
+
+        if (todolistToggle && mainCalendar) {
+            const todolistWrapper = document.getElementById('todolist'); // Seleciona o novo container
+
+            if (!todolistToggle.hasListener) {
+                todolistToggle.addEventListener('change', function () {
+                    const isChecked = this.checked;
+
+                    console.log(`--- CLIQUE NO TOGGLE ---`);
+                    console.log(`O estado do switch agora é: ${isChecked ? 'ATIVADO' : 'DESATIVADO'}`);
+
+                    // --- Lógica do Calendário ---
+                    mainCalendar.classList.toggle('calendar-hidden', isChecked);
+                    console.log(`Classes no elemento <main>: ${mainCalendar.className}`);
+
+                    // --- Lógica da To-do List ---
+                    if (todolistWrapper) {
+                        todolistWrapper.classList.toggle('active', isChecked);
+                        console.log(`Classes no wrapper #todolist: ${todolistWrapper.className}`);
+
+                        if (isChecked) {
+                            console.log('Tentando criar a To-do List...');
+                            // Verifica os dados que vieram do app.js
+                            console.log('Dados disponíveis em "todo_tasks":', todo_tasks);
+
+                            // Chama a função principal de todolist.js
+                            createTodoList();
+                            console.log('A função createTodoList() foi chamada.');
+
+                            // Verifica se algo foi realmente inserido no HTML
+                            console.log('Conteúdo do wrapper #todolist após a chamada:', todolistWrapper.innerHTML);
+                        } else {
+                            // Limpa o conteúdo ao desativar
+                            todolistWrapper.innerHTML = '';
+                            console.log('O wrapper #todolist foi limpo.');
+                        }
+                    } else {
+                        console.error("ERRO: O elemento contêiner #todolist não foi encontrado no HTML!");
+                    }
+                });
+                todolistToggle.hasListener = true;
+            }
+        } else {
+            console.error("ERRO: Não foi possível encontrar o toggle switch ou o elemento <main> do calendário.");
+        }
+    }, 100); // O timeout original já estava aqui
 });
 
 function loadCalendarioMensal() {
@@ -37,16 +91,16 @@ function loadCalendarioMensal() {
     configurarGridCalendario(blocosCalendario, "repeat(7, 1fr)", "repeat(6, 1fr)");
     blocosCalendario.innerHTML = '';
 
-        for (let i = primeiroDiaMes - 1; i >= 0; i--) {
+    for (let i = primeiroDiaMes - 1; i >= 0; i--) {
         criarDiaCalendario(blocosCalendario, diasMesAnterior - i, true);
     }
 
-        for (let i = 1; i <= quantidadeDiasMesAtual; i++) {
+    for (let i = 1; i <= quantidadeDiasMesAtual; i++) {
         const ehHoje = i === diaHoje && mes === mesHoje && ano === anoHoje;
         criarDiaCalendario(blocosCalendario, i, false, ehHoje);
     }
 
-        for (let i = 1; i <= difDiasProxMes; i++) {
+    for (let i = 1; i <= difDiasProxMes; i++) {
         criarDiaCalendario(blocosCalendario, i, true);
     }
 
@@ -61,13 +115,13 @@ function loadCalendarioSemanal() {
 
     configurarGridCalendario(blocosCalendario, "repeat(7, minmax(0, 1fr))", "auto repeat(24, 1fr)", "visualizacao-semanal");
 
-        for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 7; i++) {
         const diaAtual = new Date(inicioSemana);
         diaAtual.setDate(inicioSemana.getDate() + i);
         criarCabecalhoDiaSemanal(blocosCalendario, diaAtual);
     }
 
-        for (let hora = 0; hora < 24; hora++) {
+    for (let hora = 0; hora < 24; hora++) {
         for (let dia = 0; dia < 7; dia++) {
             const diaAtual = new Date(inicioSemana);
             diaAtual.setDate(inicioSemana.getDate() + dia);
@@ -88,14 +142,14 @@ function loadCalendarioDiario() {
 
     configurarGridCalendario(canva, "minmax(0, 1fr)", "auto repeat(24, 1fr)", "visualizacao-diaria");
 
-        const headerDiv = document.createElement("div");
+    const headerDiv = document.createElement("div");
     headerDiv.classList.add("cabecalho-dia-diario");
     headerDiv.innerHTML = `
             <div class="numero-dia-diario" style="${ehHoje ? 'background-color: #150A35; color: white;' : ''}">${dia}</div>
         `;
     canva.appendChild(headerDiv);
 
-        for (let i = 0; i < 24; i++) {
+    for (let i = 0; i < 24; i++) {
         const dataAtual = new Date(ano, mes, dia, i, 0, 0, 0);
         criarCelulaHora(canva, dataAtual, i, true);
     }
@@ -233,9 +287,9 @@ function criarDivCabecalho(container, texto) {
 }
 
 function renderizarTarefas() {
-        document.querySelectorAll('.tarefa-evento').forEach(tarefa => tarefa.remove());
+    document.querySelectorAll('.tarefa-evento').forEach(tarefa => tarefa.remove());
 
-        const tarefasCarregadas = typeof obterTarefas === 'function' ? obterTarefas() : [];
+    const tarefasCarregadas = typeof obterTarefas === 'function' ? obterTarefas() : [];
 
     tarefasCarregadas.forEach(tarefa => {
         const dataTarefa = new Date(tarefa.data + 'T' + tarefa.hora.replace('Z', ''));
@@ -284,13 +338,14 @@ function renderizarTarefaSemanalDiaria(tarefa, dataTarefa, corPrioridade, estilo
 }
 
 function adicionarTarefaMensal(celula, tarefa, dataTarefa, corPrioridade, estiloRealizada) {
-        const wrapper = celula.querySelector('.dia-content-wrapper');
-    if (!wrapper) return; 
+    const wrapper = celula.querySelector('.dia-content-wrapper');
+    if (!wrapper) return;
     let container = wrapper.querySelector('.tarefas-container-mes');
     if (!container) {
         container = document.createElement('div');
         container.classList.add('tarefas-container-mes');
-        wrapper.appendChild(container);     }
+        wrapper.appendChild(container);
+    }
 
     const tarefaElemento = document.createElement('div');
     tarefaElemento.classList.add('tarefa-evento', 'tarefa-item-mes');
@@ -313,7 +368,7 @@ function adicionarTarefaNaCelula(celula, tarefa, corPrioridade, estiloRealizada)
     if (!container) {
         container = document.createElement('div');
         container.classList.add('tarefas-container-celula');
-        container.classList.add('scrollbar');         celula.appendChild(container);
+        container.classList.add('scrollbar'); celula.appendChild(container);
     }
 
     const tarefaElemento = document.createElement('div');
@@ -435,10 +490,10 @@ function adicionarEstilosTarefas() {
 function criarModalTarefa() {
     let modalExistente = document.getElementById("modalTarefa");
     if (modalExistente) {
-                modalExistente.remove();
+        modalExistente.remove();
     }
 
-        const modalDiv = document.createElement('div');
+    const modalDiv = document.createElement('div');
     modalDiv.className = 'modal fade';
     modalDiv.id = 'modalTarefa';
     modalDiv.tabIndex = '-1';
@@ -508,11 +563,11 @@ function criarModalTarefa() {
         </div>
     `;
 
-        document.body.appendChild(modalDiv);
+    document.body.appendChild(modalDiv);
 
     instanciaModalTarefa = new bootstrap.Modal(document.getElementById('modalTarefa'));
 
-        const btnSalvar = document.getElementById('btnSalvarTarefa');
+    const btnSalvar = document.getElementById('btnSalvarTarefa');
     const btnExcluir = document.getElementById('btnExcluirTarefa');
     const formTarefa = document.getElementById('formTarefa');
 
@@ -520,7 +575,7 @@ function criarModalTarefa() {
         console.log("Botão salvar clicado");
         if (formTarefa.checkValidity()) {
             salvarTarefa();
-                        instanciaModalTarefa.hide();
+            instanciaModalTarefa.hide();
         } else {
             formTarefa.reportValidity();
         }
@@ -529,10 +584,11 @@ function criarModalTarefa() {
     btnExcluir.addEventListener('click', () => {
         if (tarefaEditandoId !== null) {
             excluirTarefa(tarefaEditandoId);
-            instanciaModalTarefa.hide();         }
+            instanciaModalTarefa.hide();
+        }
     });
 
-        document.getElementById('modalTarefa').addEventListener('show.bs.modal', function (event) {
+    document.getElementById('modalTarefa').addEventListener('show.bs.modal', function (event) {
         const botaoExcluir = document.getElementById('btnExcluirTarefa');
         const areaBotaoConcluido = document.getElementById('areaBotaoConcluido');
 
@@ -549,19 +605,19 @@ function criarModalTarefa() {
 }
 
 function abrirModalNovaTarefa(data, hora = '08:00') {
-    tarefaEditandoId = null; 
-        criarModalTarefa();
+    tarefaEditandoId = null;
+    criarModalTarefa();
 
-        const dataFormatada = formatarDataParaInput(data);
+    const dataFormatada = formatarDataParaInput(data);
 
-        document.getElementById('tituloTarefa').value = '';
+    document.getElementById('tituloTarefa').value = '';
     document.getElementById('dataTarefa').value = dataFormatada;
     document.getElementById('horaTarefa').value = hora + ':00';
     document.getElementById('prioridadeTarefa').value = 'Média';
     document.getElementById('descricaoTarefa').value = '';
     document.getElementById('recorrenciaTarefa').value = 'Não repete';
 
-        document.getElementById('btnExcluirTarefa').classList.add('d-none');
+    document.getElementById('btnExcluirTarefa').classList.add('d-none');
 
     instanciaModalTarefa?.show();
 }
@@ -570,10 +626,10 @@ function abrirModalEditarTarefa(idTarefa) {
     const tarefa = tarefas.find(t => t.id === idTarefa);
     if (!tarefa) return;
 
-        criarModalTarefa();
+    criarModalTarefa();
 
-    tarefaEditandoId = idTarefa; 
-        document.getElementById('tituloTarefa').value = tarefa.titulo;
+    tarefaEditandoId = idTarefa;
+    document.getElementById('tituloTarefa').value = tarefa.titulo;
     document.getElementById('dataTarefa').value = tarefa.data;
     document.getElementById('horaTarefa').value = tarefa.hora;
     document.getElementById('prioridadeTarefa').value = tarefa.prioridade;
@@ -581,7 +637,7 @@ function abrirModalEditarTarefa(idTarefa) {
     document.getElementById('tarefaRealizada').checked = tarefa.realizada || false;
     document.getElementById('recorrenciaTarefa').value = tarefa.recorrencia || 'Não repete';
 
-        document.getElementById('btnExcluirTarefa').classList.remove('d-none');
+    document.getElementById('btnExcluirTarefa').classList.remove('d-none');
     document.getElementById('areaBotaoConcluido').classList.remove('d-none');
 
     instanciaModalTarefa?.show();
@@ -600,7 +656,7 @@ function salvarTarefa() {
     const userId = typeof currentLoggedInUserId !== 'undefined' ? currentLoggedInUserId : "defaultUser";
 
     if (tarefaEditandoId !== null) {
-                const index = tarefas.findIndex(t => t.id === tarefaEditandoId);
+        const index = tarefas.findIndex(t => t.id === tarefaEditandoId);
         if (index === -1) return;
 
         const tarefaOriginal = tarefas[index];
@@ -611,32 +667,32 @@ function salvarTarefa() {
         };
 
         if (!tarefaOriginal.realizada && tarefaEditada.realizada) {
-                        if (typeof window.addXp === 'function') {
-                const xpGanho = tarefaEditada.exp || 10;                 window.addXp(xpGanho);                 console.log(`Parabéns! Você ganhou ${xpGanho} XP por concluir a tarefa!`);
+            if (typeof window.addXp === 'function') {
+                const xpGanho = tarefaEditada.exp || 10; window.addXp(xpGanho); console.log(`Parabéns! Você ganhou ${xpGanho} XP por concluir a tarefa!`);
             }
         }
-                                        if (tarefaEditada.recorrencia !== 'Não repete' && !tarefaOriginal.realizada && tarefaEditada.realizada) {
+        if (tarefaEditada.recorrencia !== 'Não repete' && !tarefaOriginal.realizada && tarefaEditada.realizada) {
 
-                        if (tarefaEditada.serieId) {
-                                const tarefasDaSerie = tarefas
+            if (tarefaEditada.serieId) {
+                const tarefasDaSerie = tarefas
                     .filter(t => t.serieId === tarefaEditada.serieId)
                     .sort((a, b) => new Date(a.data) - new Date(b.data));
 
                 const indexAtualNaSerie = tarefasDaSerie.findIndex(t => t.id === tarefaEditada.id);
 
                 let sequenciaAnterior = 0;
-                                if (indexAtualNaSerie > 0) {
+                if (indexAtualNaSerie > 0) {
                     const tarefaAnterior = tarefasDaSerie[indexAtualNaSerie - 1];
-                                        if (tarefaAnterior.realizada) {
+                    if (tarefaAnterior.realizada) {
                         sequenciaAnterior = tarefaAnterior.sequencia || 0;
                     }
                 }
-                                tarefaEditada.sequencia = sequenciaAnterior + 1;
+                tarefaEditada.sequencia = sequenciaAnterior + 1;
             } else {
-                                tarefaEditada.sequencia = (tarefaOriginal.sequencia || 0) + 1;
+                tarefaEditada.sequencia = (tarefaOriginal.sequencia || 0) + 1;
             }
         } else if (tarefaOriginal.realizada && !tarefaEditada.realizada) {
-                                    tarefaEditada.sequencia = 0;
+            tarefaEditada.sequencia = 0;
         }
 
         fetch(`http://localhost:3000/tarefas/${tarefaEditandoId}`, {
@@ -653,11 +709,11 @@ function salvarTarefa() {
             .catch(error => console.error('Erro ao editar tarefa:', error));
 
     } else {
-                const serieId = recorrencia !== 'Não repete' ? `serie-${Date.now()}` : null;
+        const serieId = recorrencia !== 'Não repete' ? `serie-${Date.now()}` : null;
 
         const novaTarefa = {
             titulo, data, hora, prioridade, descricao, realizada: false, recorrencia,
-            exp: 10,             sequencia: 0, userId, serieId: serieId
+            exp: 10, sequencia: 0, userId, serieId: serieId
         };
 
         fetch('http://localhost:3000/tarefas', {
@@ -678,21 +734,21 @@ function salvarTarefa() {
 }
 
 function gerarTarefasRecorrentes(tarefaBase) {
-        const dataOriginal = new Date(tarefaBase.data + 'T00:00:00');
+    const dataOriginal = new Date(tarefaBase.data + 'T00:00:00');
     const anoOriginal = dataOriginal.getFullYear();
-    const mesOriginal = dataOriginal.getMonth(); 
+    const mesOriginal = dataOriginal.getMonth();
     const tarefasAGerar = [];
 
-        const hoje = new Date();
+    const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
 
     if (tarefaBase.recorrencia === 'Diariamente') {
         let dataAtual = new Date(dataOriginal);
 
-                while (dataAtual.getMonth() === mesOriginal) {
-                        dataAtual.setDate(dataAtual.getDate() + 1);
+        while (dataAtual.getMonth() === mesOriginal) {
+            dataAtual.setDate(dataAtual.getDate() + 1);
 
-                        if (dataAtual.getMonth() !== mesOriginal) {
+            if (dataAtual.getMonth() !== mesOriginal) {
                 break;
             }
 
@@ -704,10 +760,10 @@ function gerarTarefasRecorrentes(tarefaBase) {
     } else if (tarefaBase.recorrencia === 'Semanalmente') {
         let dataAtual = new Date(dataOriginal);
 
-                while (dataAtual.getMonth() === mesOriginal) {
-                        dataAtual.setDate(dataAtual.getDate() + 7);
+        while (dataAtual.getMonth() === mesOriginal) {
+            dataAtual.setDate(dataAtual.getDate() + 7);
 
-                        if (dataAtual.getMonth() !== mesOriginal) {
+            if (dataAtual.getMonth() !== mesOriginal) {
                 break;
             }
 
@@ -717,7 +773,7 @@ function gerarTarefasRecorrentes(tarefaBase) {
             }
         }
     } else if (tarefaBase.recorrencia === 'Mensalmente') {
-                const diaDaSemanaOriginal = dataOriginal.getDay();
+        const diaDaSemanaOriginal = dataOriginal.getDay();
         const ordinalDaSemana = Math.ceil(dataOriginal.getDate() / 7);
 
         let dataDeReferencia = new Date(dataOriginal);
@@ -741,7 +797,7 @@ function gerarTarefasRecorrentes(tarefaBase) {
         }
     }
 
-        tarefasAGerar.forEach(tarefa => {
+    tarefasAGerar.forEach(tarefa => {
         delete tarefa.id;
         tarefa.realizada = false;
         tarefa.userId = tarefaBase.userId;
@@ -779,15 +835,15 @@ function mostrarDetalhesTarefa(tarefa) {
 }
 
 function configurarEventosCalendario() {
-        document.querySelectorAll('.cardDiaCalendario').forEach(celula => {
-                celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
+    document.querySelectorAll('.cardDiaCalendario').forEach(celula => {
+        celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
 
-                celula.eventoCliqueCalendario = function (e) {
-                        if (e.target.closest('.tarefa-evento')) return;
+        celula.eventoCliqueCalendario = function (e) {
+            if (e.target.closest('.tarefa-evento')) return;
 
-                        const diaTexto = this.querySelector('div')?.textContent;
+            const diaTexto = this.querySelector('div')?.textContent;
 
-                        if (!diaTexto || isNaN(parseInt(diaTexto))) return;
+            if (!diaTexto || isNaN(parseInt(diaTexto))) return;
             if (this.querySelector('div[style*="color: gray"]')) return;
 
             const dia = parseInt(diaTexto);
@@ -801,31 +857,31 @@ function configurarEventosCalendario() {
         celula.addEventListener('dblclick', celula.eventoCliqueCalendario);
     });
 
-        document.querySelectorAll('.celula-hora-diaria').forEach(celula => {
-                celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
+    document.querySelectorAll('.celula-hora-diaria').forEach(celula => {
+        celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
 
-                celula.eventoCliqueCalendario = function (e) {
-                        if (e.target.closest('.tarefa-evento')) return;
+        celula.eventoCliqueCalendario = function (e) {
+            if (e.target.closest('.tarefa-evento')) return;
 
-                        const dataStr = this.dataset.data;
+            const dataStr = this.dataset.data;
             const horaStr = this.dataset.hora;
 
             if (!dataStr) return;
 
-                                                const data = new Date(dataStr + 'T00:00:00');
+            const data = new Date(dataStr + 'T00:00:00');
             abrirModalNovaTarefa(data, horaStr?.split(':')[0] || '08');
         };
 
         celula.addEventListener('dblclick', celula.eventoCliqueCalendario);
     });
 
-        document.querySelectorAll('.tarefa-evento').forEach(tarefaEl => {
-                if (tarefaEl.eventoCliqueTarefa) {
+    document.querySelectorAll('.tarefa-evento').forEach(tarefaEl => {
+        if (tarefaEl.eventoCliqueTarefa) {
             tarefaEl.removeEventListener('click', tarefaEl.eventoCliqueTarefa);
         }
 
-                tarefaEl.eventoCliqueTarefa = function (e) {
-            e.stopPropagation(); 
+        tarefaEl.eventoCliqueTarefa = function (e) {
+            e.stopPropagation();
             const idTarefa = this.getAttribute('data-id-tarefa');
             if (idTarefa) {
                 const tarefa = tarefas.find(t => t.id === idTarefa);
@@ -835,14 +891,14 @@ function configurarEventosCalendario() {
             }
         };
 
-                tarefaEl.addEventListener('click', tarefaEl.eventoCliqueTarefa);
+        tarefaEl.addEventListener('click', tarefaEl.eventoCliqueTarefa);
     });
 }
 
 const atualizarCalendarioOriginal2 = atualizarCalendario;
 atualizarCalendario = function () {
     atualizarCalendarioOriginal2();
-        setTimeout(() => {
+    setTimeout(() => {
         configurarEventosCalendario();
     }, 100);
 };

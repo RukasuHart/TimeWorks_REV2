@@ -1,7 +1,9 @@
 // ========== CONFIGURAÇÕES E VARIÁVEIS GLOBAIS ==========
 const urlBase = 'http://localhost:3000';
 const urlTarefas = `${urlBase}/tarefas`;
+const urlTodoTasks = `${urlBase}/todo_tasks`;
 let tarefas = [];
+let todo_tasks = [];
 let currentLoggedInUserId = localStorage.getItem('currentUserId');
 
 if (!currentLoggedInUserId) {
@@ -56,20 +58,95 @@ async function checkTutorialStatus() {
 
 
 // ========== CARREGAMENTO DE DADOS ==========
+
+async function carregarTodoTasks(callback) {
+    try {
+        const response = await fetch(`${urlTodoTasks}?userId=${currentLoggedInUserId}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        todo_tasks = await response.json();
+        callback?.();
+    } catch (error) {
+        console.error('Erro ao carregar To-do Tasks:', error);
+        todo_tasks = []; // Garante que a lista esteja vazia em caso de erro
+    }
+}
+
+async function adicionarTodoTask(text) {
+    const novaTask = {
+        text: text,
+        completed: false,
+        userId: currentLoggedInUserId
+    };
+    try {
+        const response = await fetch(urlTodoTasks, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novaTask)
+        });
+        if (!response.ok) throw new Error('Falha ao adicionar a tarefa');
+        recarregarTudo(); // Recarrega e redesenha tudo
+    } catch (error) {
+        console.error('Erro em adicionarTodoTask:', error);
+    }
+}
+
+async function atualizarTodoTask(task) {
+    try {
+        const response = await fetch(`${urlTodoTasks}/${task.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(task)
+        });
+        if (!response.ok) throw new Error('Falha ao atualizar a tarefa');
+        recarregarTudo();
+    } catch (error) {
+        console.error('Erro em atualizarTodoTask:', error);
+    }
+}
+
+async function excluirTodoTask(taskId) {
+    try {
+        const response = await fetch(`${urlTodoTasks}/${taskId}`, {
+            method: 'DELETE'
+        });
+        if (!response.ok) throw new Error('Falha ao excluir a tarefa');
+        recarregarTudo();
+    } catch (error) {
+        console.error('Erro em excluirTodoTask:', error);
+    }
+}
+
+// Uma função central para recarregar todos os dados e atualizar a UI
+function recarregarTudo() {
+    carregaDadosJSONServer(() => {
+        if (typeof atualizarCalendario === 'function') {
+            atualizarCalendario();
+        }
+        // Se a to-do list estiver visível, recria ela com os novos dados
+        if (document.getElementById('todolist')?.classList.contains('active')) {
+            createTodoList();
+        }
+    });
+}
+
 async function carregaDadosJSONServer(callback) {
     try {
+        // Carrega as tarefas do calendário (código existente)
         let response = await fetch(`${urlTarefas}?userId=${currentLoggedInUserId}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         tarefas = await response.json();
 
         const algumaSequenciaQuebrou = await verificarEQuebrarSequencias();
-
         if (algumaSequenciaQuebrou) {
             response = await fetch(`${urlTarefas}?userId=${currentLoggedInUserId}`);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             tarefas = await response.json();
         }
+        
+        // Carrega as tarefas da to-do list
+        await carregarTodoTasks();
 
+        // Atualiza os componentes da UI
         if (typeof htmlSequenciaTarefas === 'function') htmlSequenciaTarefas();
         if (typeof htmlPrioridadeTarefas === 'function') htmlPrioridadeTarefas();
         callback?.();
