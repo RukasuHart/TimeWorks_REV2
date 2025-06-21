@@ -2,105 +2,105 @@
   "lastUserId": 1,
   "achievements": [
     {
-      "id": 1,
+      "id": "1",
       "name": "O Início",
       "description": "Crie e complete sua primeira tarefa!",
       "icon": "img/conquista.png",
       "tier": "bronze"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Primeira Sequência",
       "description": "Consiga sua primeira sequência em uma tarefa recorrente!",
       "icon": "img/conquista.png",
       "tier": "bronze"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Nível 10",
       "description": "Você atingiu o nível 10, parabéns!",
       "icon": "img/conquista.png",
       "tier": "bronze"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Sequência Diária",
       "description": "Conclua uma tarefa diária por 5 dias seguidos.",
       "icon": "img/conquista.png",
       "tier": "bronze"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Sequência Semanal",
       "description": "Conclua uma tarefa semanal por 2 semanas seguidas.",
       "icon": "img/conquista.png",
       "tier": "bronze"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Sequência Mensal",
       "description": "Conclua uma tarefa mensal por 3 meses seguidos.",
       "icon": "img/conquista.png",
       "tier": "bronze"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Nível 30",
       "description": "Você atingiu o nível 30, parabéns!",
       "icon": "img/conquista.png",
       "tier": "silver"
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Sequência Diária",
       "description": "Conclua uma tarefa diária por 15 dias seguidos.",
       "icon": "img/conquista.png",
       "tier": "silver"
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Sequência Semanal",
       "description": "Conclua uma tarefa semanal por 3 semanas seguidas.",
       "icon": "img/conquista.png",
       "tier": "silver"
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Sequência Mensal",
       "description": "Conclua uma tarefa mensal por 6 meses seguidos.",
       "icon": "img/conquista.png",
       "tier": "silver"
     },
     {
-      "id": 11,
+      "id": "11",
       "name": "Nível 70",
       "description": "Você atingiu o nível 70, parabéns!",
       "icon": "img/conquista.png",
       "tier": "gold"
     },
     {
-      "id": 12,
+      "id": "12",
       "name": "Sequência Diária",
       "description": "Conclua uma tarefa diária por 30 dias seguidos.",
       "icon": "img/conquista.png",
       "tier": "gold"
     },
     {
-      "id": 13,
+      "id": "13",
       "name": "Sequência Semanal",
       "description": "Conclua uma tarefa semanal por 4 semanas seguidas.",
       "icon": "img/conquista.png",
       "tier": "gold"
     },
     {
-      "id": 14,
+      "id": "14",
       "name": "Sequência Mensal",
       "description": "Conclua uma tarefa mensal por 12 meses seguidos.",
       "icon": "img/conquista.png",
       "tier": "gold"
     },
     {
-      "id": 15,
+      "id": "15",
       "name": "Lenda Viva",
       "description": "Complete uma tarefa mensal por 2 anos seguidos. Você é uma inspiração!",
       "icon": "img/conquista.png",
@@ -133,20 +133,6 @@
       "recorrencia": "Semanalmente",
       "exp": 10,
       "sequencia": 1,
-      "userId": "user1750482679744",
-      "serieId": "serie-1750483267558"
-    },
-    {
-      "id": "cd54",
-      "titulo": "a",
-      "data": "2025-06-28",
-      "hora": "08:00:00",
-      "prioridade": "Muito baixa",
-      "descricao": "",
-      "realizada": true,
-      "recorrencia": "Semanalmente",
-      "exp": 10,
-      "sequencia": 2,
       "userId": "user1750482679744",
       "serieId": "serie-1750483267558"
     },
@@ -305,34 +291,6 @@
       "serieId": null
     },
     {
-      "id": "a8d8",
-      "titulo": "asd",
-      "data": "2025-06-20",
-      "hora": "08:00:00",
-      "prioridade": "Muito baixa",
-      "descricao": "",
-      "realizada": true,
-      "recorrencia": "Diariamente",
-      "exp": 10,
-      "sequencia": 1,
-      "userId": "user1750482679744",
-      "serieId": "serie-1750483462796"
-    },
-    {
-      "id": "725e",
-      "titulo": "asd",
-      "data": "2025-06-21",
-      "hora": "08:00:00",
-      "prioridade": "Muito baixa",
-      "descricao": "",
-      "realizada": true,
-      "recorrencia": "Diariamente",
-      "exp": 10,
-      "sequencia": 2,
-      "userId": "user1750482679744",
-      "serieId": "serie-1750483462796"
-    },
-    {
       "id": "5cd6",
       "titulo": "asd",
       "data": "2025-06-22",
@@ -367,10 +325,10 @@
       "hora": "08:00:00",
       "prioridade": "Muito baixa",
       "descricao": "",
-      "realizada": false,
+      "realizada": true,
       "recorrencia": "Diariamente",
       "exp": 10,
-      "sequencia": 0,
+      "sequencia": 1,
       "userId": "user1750482679744",
       "serieId": "serie-1750483462796"
     },
@@ -381,10 +339,10 @@
       "hora": "08:00:00",
       "prioridade": "Muito baixa",
       "descricao": "",
-      "realizada": false,
+      "realizada": true,
       "recorrencia": "Diariamente",
       "exp": 10,
-      "sequencia": 0,
+      "sequencia": 2,
       "userId": "user1750482679744",
       "serieId": "serie-1750483462796"
     },
@@ -445,20 +403,6 @@
       "serieId": "serie-1750483462796"
     },
     {
-      "id": "06ed",
-      "titulo": "asd",
-      "data": "2025-06-30",
-      "hora": "08:00:00",
-      "prioridade": "Muito baixa",
-      "descricao": "",
-      "realizada": false,
-      "recorrencia": "Diariamente",
-      "exp": 10,
-      "sequencia": 0,
-      "userId": "user1750482679744",
-      "serieId": "serie-1750483462796"
-    },
-    {
       "id": "404f",
       "titulo": "dfg",
       "data": "2025-06-21",
@@ -479,7 +423,7 @@
       "hora": "06:00",
       "prioridade": "Alta",
       "descricao": "",
-      "realizada": false,
+      "realizada": true,
       "recorrencia": "Não repete",
       "exp": 10,
       "sequencia": 0,
@@ -507,10 +451,10 @@
       "hora": "08:00:00",
       "prioridade": "Muito alta",
       "descricao": "",
-      "realizada": false,
+      "realizada": true,
       "recorrencia": "Semanalmente",
       "exp": 10,
-      "sequencia": 0,
+      "sequencia": 1,
       "userId": "user1750482679744",
       "serieId": "serie-1750487253635"
     },
@@ -521,10 +465,10 @@
       "hora": "08:00:00",
       "prioridade": "Muito alta",
       "descricao": "",
-      "realizada": false,
+      "realizada": true,
       "recorrencia": "Semanalmente",
       "exp": 10,
-      "sequencia": 0,
+      "sequencia": 2,
       "userId": "user1750482679744",
       "serieId": "serie-1750487253635"
     },
@@ -639,6 +583,76 @@
       "sequencia": 0,
       "userId": "user1750482679744",
       "serieId": "serie-1750487292815"
+    },
+    {
+      "id": "2694",
+      "titulo": "n",
+      "data": "2025-06-19",
+      "hora": "08:00:00",
+      "prioridade": "Muito alta",
+      "descricao": "",
+      "realizada": false,
+      "recorrencia": "Não repete",
+      "exp": 10,
+      "sequencia": 0,
+      "userId": "user1750482679744",
+      "serieId": null
+    },
+    {
+      "id": "262e",
+      "titulo": "f",
+      "data": "2025-06-21",
+      "hora": "15:00",
+      "prioridade": "Baixa",
+      "descricao": "",
+      "realizada": true,
+      "recorrencia": "Não repete",
+      "exp": 10,
+      "sequencia": 0,
+      "userId": "user1750482679744",
+      "serieId": null
+    },
+    {
+      "id": "683a",
+      "titulo": "asdge",
+      "data": "2025-06-16",
+      "hora": "14:00",
+      "prioridade": "Muito alta",
+      "descricao": "",
+      "realizada": true,
+      "recorrencia": "Não repete",
+      "exp": 10,
+      "sequencia": 0,
+      "userId": "user1750482679744",
+      "serieId": null
+    },
+    {
+      "id": "a6d9",
+      "titulo": "d",
+      "data": "2025-06-21",
+      "hora": "08:00:00",
+      "prioridade": "Baixa",
+      "descricao": "",
+      "realizada": true,
+      "recorrencia": "Semanalmente",
+      "exp": 10,
+      "sequencia": 1,
+      "userId": "user1750521506398",
+      "serieId": "serie-1750521520528"
+    },
+    {
+      "id": "81ab",
+      "titulo": "d",
+      "data": "2025-06-28",
+      "hora": "08:00:00",
+      "prioridade": "Baixa",
+      "descricao": "",
+      "realizada": true,
+      "recorrencia": "Semanalmente",
+      "exp": 10,
+      "sequencia": 2,
+      "userId": "user1750521506398",
+      "serieId": "serie-1750521520528"
     }
   ],
   "users": [
@@ -647,7 +661,7 @@
       "senha": "a",
       "name": "Time Works",
       "profilePic": "img/man2.png",
-      "xp": 1067,
+      "xp": 1137,
       "level": 30,
       "hasSeenTutorial": true,
       "unlockedAchievements": [
@@ -667,7 +681,28 @@
         14,
         15
       ]
+    },
+    {
+      "id": "user1750521506398",
+      "senha": "n",
+      "name": "n",
+      "profilePic": "img/man.png",
+      "xp": 20,
+      "level": 1,
+      "hasSeenTutorial": true,
+      "unlockedAchievements": [
+        1,
+        2,
+        5
+      ]
     }
   ],
-  "todo_tasks": []
+  "todo_tasks": [
+    {
+      "id": "74c1",
+      "text": "teste",
+      "completed": false,
+      "userId": "user1750482679744"
+    }
+  ]
 }

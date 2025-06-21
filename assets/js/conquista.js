@@ -1,6 +1,8 @@
 let allAchievements = [];
 
 async function fetchAllAchievements() {
+    // Evita buscar múltiplas vezes sem necessidade
+    if (allAchievements.length > 0) return;
     try {
         const response = await fetch('http://localhost:3000/achievements');
         if (!response.ok) {
@@ -38,6 +40,12 @@ async function unlockAchievement(achievementId, userData) {
 
 
 function renderUserAchievements(userData) {
+    // --- INÍCIO DO CÓDIGO DE DEBUG ---
+    console.log("--- Iniciando renderização de conquistas ---");
+    console.log("Dados do usuário para renderizar:", userData.unlockedAchievements);
+    console.log("Lista mestre de conquistas disponível:", allAchievements);
+    // --- FIM DO CÓDIGO DE DEBUG ---
+
     const container = document.getElementById('conquistas-container');
     if (!container) return;
 
@@ -52,10 +60,10 @@ function renderUserAchievements(userData) {
     }
 
     userData.unlockedAchievements.forEach(id => {
-        const achievement = allAchievements.find(a => a.id === id);
+        const achievement = allAchievements.find(a => Number(a.id) === Number(id));
         if (achievement) {
             const card = document.createElement('div');
-                        card.className = `card ${achievement.tier}`;
+            card.className = `card ${achievement.tier}`;
             card.innerHTML = `
                 <img src="${achievement.icon}" alt="${achievement.name}" class="card-image">
                 <div class="card-content">
@@ -64,6 +72,9 @@ function renderUserAchievements(userData) {
                 </div>
             `;
             container.appendChild(card);
+        } else {
+            // Log para nos dizer se uma conquista específica não foi encontrada na lista mestre
+            console.warn(`Conquista com ID ${id} não encontrada na lista 'allAchievements'.`);
         }
     });
 }
@@ -74,19 +85,19 @@ async function checkAllAchievements(userData, userTasks) {
         await fetchAllAchievements();
     }
 
-        if (userTasks.some(t => t.realizada)) {
+    if (userTasks.some(t => t.realizada)) {
         await unlockAchievement(1, userData);
     }
 
-        if (userTasks.some(t => t.sequencia > 0)) {
+    if (userTasks.some(t => t.sequencia > 0)) {
         await unlockAchievement(2, userData);
     }
 
-        if (userData.level >= 10) await unlockAchievement(3, userData);
+    if (userData.level >= 10) await unlockAchievement(3, userData);
     if (userData.level >= 30) await unlockAchievement(7, userData);
     if (userData.level >= 70) await unlockAchievement(11, userData);
 
-        const getMaxStreak = (recurrence) => {
+    const getMaxStreak = (recurrence) => {
         const streaks = userTasks
             .filter(t => t.recorrencia === recurrence && t.sequencia > 0)
             .map(t => t.sequencia);
@@ -107,8 +118,9 @@ async function checkAllAchievements(userData, userTasks) {
     if (monthlyStreak >= 3) await unlockAchievement(6, userData);
     if (monthlyStreak >= 6) await unlockAchievement(10, userData);
     if (monthlyStreak >= 12) await unlockAchievement(14, userData);
-    if (monthlyStreak >= 24) await unlockAchievement(15, userData); 
+    if (monthlyStreak >= 24) await unlockAchievement(15, userData);
 
 }
 
+// Carrega a lista de conquistas na primeira vez que o script é lido
 fetchAllAchievements();

@@ -1177,7 +1177,8 @@ main.calendar-hidden {
 
 todolist-wrapper {
     display: none;
-    background-color: #1E0E45; /* Fundo similar ao da barra lateral */
+    background-color: #1E0E45;
+    /* Fundo similar ao da barra lateral */
     color: white;
 }
 
@@ -1206,7 +1207,8 @@ todolist-wrapper {
     margin-bottom: 15px;
 }
 
-#todo-list li, #completed-list li {
+#todo-list li,
+#completed-list li {
     background-color: #2a1a4a;
     padding: 10px;
     margin-bottom: 8px;
@@ -1216,7 +1218,8 @@ todolist-wrapper {
     gap: 10px;
 }
 
-#todo-list li.completed, #completed-list li.completed {
+#todo-list li.completed,
+#completed-list li.completed {
     text-decoration: line-through;
     opacity: 0.6;
 }
@@ -1224,4 +1227,128 @@ todolist-wrapper {
 .divider-todolist {
     margin: 20px 0;
     border-color: #3a2a5a;
+}
+
+/* =================================================== */
+/* CORREÇÕES DE LAYOUT E ESTILO PARA A TO-DO LIST     */
+/* =================================================== */
+
+/* 1. FAZ O NOVO WRAPPER CONTROLAR O POSICIONAMENTO */
+/* 1. FAZ O NOVO WRAPPER CONTROLAR O POSICIONAMENTO */
+.content-flipper {
+    position: relative;
+    flex-grow: 1;
+    /* Garante que o flipper ocupe o espaço */
+}
+
+/* 2. FAZ O CALENDÁRIO E A TODOLIST SE SOBREPOREM CORRETAMENTE */
+.content-flipper>main,
+.content-flipper>.todolist-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* 3. CONTROLE DE CAMADAS (A CORREÇÃO PRINCIPAL) */
+
+/* Por padrão, o calendário fica na frente */
+.content-flipper>main {
+    z-index: 10;
+}
+
+.content-flipper>.todolist-wrapper {
+    z-index: 5;
+    /* A to-do list fica atrás */
+}
+
+/* Quando a to-do list está ativa, ela vem para a frente */
+.content-flipper>.todolist-wrapper.active {
+    z-index: 15;
+}
+
+
+/* 4. ESTILOS QUE FALTAVAM PARA O CONTEÚDO DA TO-DO LIST (MANTENHA ESTES) */
+/* O contêiner principal que é gerado pelo JS */
+.todo-container {
+    background-color: #1E0E45;
+    padding: 20px;
+    border-radius: 10px;
+    height: 100%;
+    color: white;
+    position: relative;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-container .titulotodolist {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Ajusta o botão 'Adicionar' */
+.todo-container .btn-add {
+    background-color: #6a0dad;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    align-self: flex-start;
+    /* Alinha o botão à esquerda */
+}
+
+/* Estilos para as listas e itens */
+.todo-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.todo-container li {
+    background-color: #2a1a4a;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Espaça o conteúdo do item */
+    gap: 10px;
+}
+
+.todo-container li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Separador entre listas de tarefas */
+.todo-container .divider-todolist {
+    margin: 20px 0;
+    border-color: #3a2a5a;
+}
+
+/* Formulário para adicionar/editar tarefas */
+.task-form,
+.task-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.edit-input,
+#task-name {
+    flex-grow: 1;
+    background-color: #3a2a5a;
+    border: 1px solid #6a0dad;
+    color: white;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.edit-options {
+    display: flex;
+    gap: 5px;
 }

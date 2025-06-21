@@ -55,22 +55,22 @@
 
         <aside class="p-3">
             <div id="sequenciaTarefas"></div>
-
             <div id="prioridadeTarefasContainer"></div>
         </aside>
 
-        <main class="d-flex flex-grow-1 p-2 m-2 rounded flex-column">
+        <div class="content-flipper flex-grow-1">
 
-            <div>
-                <div id="cabecalhoCalendario"></div>
-            </div>
+            <main class="d-flex flex-grow-1 p-2 m-2 rounded flex-column">
+                <div>
+                    <div id="cabecalhoCalendario"></div>
+                </div>
+                <div id="canvaCalendario"></div>
+            </main>
 
-            <div id="canvaCalendario"></div>
+            <div id="todolist" class="todolist-wrapper flex-grow-1 p-3 m-2 rounded"></div>
 
-        </main>
-
+        </div>
     </div>
-
     <dialog>
         <div id="alinharbotaoclose">
             <button class="buttonclose"><img src="img/close50px.png" alt="closebtn" class="btnc"></button>

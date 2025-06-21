@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const openModalImg = document.querySelector('.openmodalimg');
     const userIdDisplay = document.querySelector('.userid');
     const userLevelDisplay = document.getElementById('userlevel');
-    
+
     // const userXpDisplay = document.querySelector('.userxp');
 
     const editProfileBtn = document.getElementById('edit-profile-btn');
@@ -24,6 +24,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchUserData() {
         try {
+            // ▼▼ ADICIONE ESTA LINHA PARA GARANTIR QUE A LISTA MESTRA DE CONQUISTAS SEJA CARREGADA ▼▼
+            if (typeof fetchAllAchievements === 'function') {
+                await fetchAllAchievements();
+            }
+
             let response = await fetch(urlUsers);
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             let freshUserData = await response.json();
@@ -31,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!freshUserData.unlockedAchievements) {
                 freshUserData.unlockedAchievements = [];
             }
-            
+
             await checkAllAchievements(freshUserData, obterTarefas());
 
             response = await fetch(urlUsers);
@@ -40,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             updateProfileDisplay();
             updateXpDisplay();
-            renderUserAchievements(userData); 
+            renderUserAchievements(userData);
 
         } catch (error) {
             console.error("Erro ao buscar dados do usuário ou processar conquistas:", error);
@@ -74,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     openModalBtn.addEventListener('click', () => {
         modal.showModal();
-        fetchUserData(); 
+        fetchUserData();
     });
 
     closeModalBtn.addEventListener('click', () => {
@@ -153,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(`Parabéns! Você subiu para o nível ${userData.level}!`);
         }
     }
-    
+
     function xpbar() {
         const xpBarFill = document.querySelector('.xp-bar-fill');
         const xpBarText = document.querySelector('.xp-bar-text');
@@ -165,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (xpToNextLevel === 0) {
             return;
         }
-        
+
         const calcpercent = Math.min(100, (userData.xp || 0) * 100 / xpToNextLevel);
 
         xpBarFill.style.width = `${calcpercent}%`;
