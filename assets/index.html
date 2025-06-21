@@ -15,7 +15,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const userId = localStorage.getItem('currentUserId');
             if (!userId) {
-                window.location.href = 'login.html'; 
+                window.location.href = 'login.html';
             }
         });
     </script>
@@ -27,6 +27,13 @@
         <button class="openmodal"> <img src="img/man.png" alt="opnmodal" class="openmodalimg"> </button>
         <div class="d-flex">
             <img src="img/logo.png">
+        </div>
+
+        <!-- incrementando a to do list -->
+        <div class="todolist">
+            <div class="toggle" onclick="toggleSwitch(this)"></div>
+            <div id="todolist"></div>
+            <div id="overlay"></div>
         </div>
 
         <nav class="d-flex gap-2 h-100">
@@ -125,10 +132,15 @@
 
     </dialog>
 
+
+
     <script src="js/app.js"></script>
     <script src="js/script.js"></script>
     <script src="js/sequencia.js"></script>
     <script src="js/perfil.js"></script>
+    <script src="js/todolist.js"></script>
+
+
 </body>
 
 </html>
