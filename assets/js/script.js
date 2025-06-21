@@ -1,4 +1,3 @@
-// ========== CONFIGURAÇÕES E VARIÁVEIS GLOBAIS ==========
 const nomeMeses = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -15,19 +14,16 @@ const anoHoje = dataHoje.getFullYear();
 
 let instanciaModalTarefa = null;
 
-// ========== INICIALIZAÇÃO ==========
 document.addEventListener("DOMContentLoaded", () => {
     atualizarBotaoCalendario(modoVisualizacao);
     configurarEventListeners();
     adicionarEstilosTarefas();
 
-    // Aguarda o carregamento dos dados antes de atualizar o calendário
-    setTimeout(() => {
+        setTimeout(() => {
         atualizarCalendario();
     }, 100);
 });
 
-// ========== FUNÇÕES DE VISUALIZAÇÃO DO CALENDÁRIO ==========
 function loadCalendarioMensal() {
     const blocosCalendario = document.getElementById("canvaCalendario");
     const ano = dataAtualCalendario.getFullYear();
@@ -41,19 +37,16 @@ function loadCalendarioMensal() {
     configurarGridCalendario(blocosCalendario, "repeat(7, 1fr)", "repeat(6, 1fr)");
     blocosCalendario.innerHTML = '';
 
-    // Dias do mês anterior
-    for (let i = primeiroDiaMes - 1; i >= 0; i--) {
+        for (let i = primeiroDiaMes - 1; i >= 0; i--) {
         criarDiaCalendario(blocosCalendario, diasMesAnterior - i, true);
     }
 
-    // Dias do mês atual
-    for (let i = 1; i <= quantidadeDiasMesAtual; i++) {
+        for (let i = 1; i <= quantidadeDiasMesAtual; i++) {
         const ehHoje = i === diaHoje && mes === mesHoje && ano === anoHoje;
         criarDiaCalendario(blocosCalendario, i, false, ehHoje);
     }
 
-    // Dias do próximo mês
-    for (let i = 1; i <= difDiasProxMes; i++) {
+        for (let i = 1; i <= difDiasProxMes; i++) {
         criarDiaCalendario(blocosCalendario, i, true);
     }
 
@@ -66,17 +59,15 @@ function loadCalendarioSemanal() {
     const inicioSemana = new Date(dataAtualCalendario);
     inicioSemana.setDate(inicioSemana.getDate() - diaSemana);
 
-    configurarGridCalendario(blocosCalendario, "repeat(7, 1fr)", "auto repeat(24, 1fr)", "visualizacao-semanal");
+    configurarGridCalendario(blocosCalendario, "repeat(7, minmax(0, 1fr))", "auto repeat(24, 1fr)", "visualizacao-semanal");
 
-    // Cabeçalho com dias da semana
-    for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 7; i++) {
         const diaAtual = new Date(inicioSemana);
         diaAtual.setDate(inicioSemana.getDate() + i);
         criarCabecalhoDiaSemanal(blocosCalendario, diaAtual);
     }
 
-    // Células de horas
-    for (let hora = 0; hora < 24; hora++) {
+        for (let hora = 0; hora < 24; hora++) {
         for (let dia = 0; dia < 7; dia++) {
             const diaAtual = new Date(inicioSemana);
             diaAtual.setDate(inicioSemana.getDate() + dia);
@@ -95,18 +86,16 @@ function loadCalendarioDiario() {
     const ano = dataAtualCalendario.getFullYear();
     const ehHoje = dia === diaHoje && mes === mesHoje && ano === anoHoje;
 
-    configurarGridCalendario(canva, "1fr", "auto repeat(24, 1fr)", "visualizacao-diaria");
+    configurarGridCalendario(canva, "minmax(0, 1fr)", "auto repeat(24, 1fr)", "visualizacao-diaria");
 
-    // Cabeçalho do dia
-    const headerDiv = document.createElement("div");
+        const headerDiv = document.createElement("div");
     headerDiv.classList.add("cabecalho-dia-diario");
     headerDiv.innerHTML = `
             <div class="numero-dia-diario" style="${ehHoje ? 'background-color: #150A35; color: white;' : ''}">${dia}</div>
         `;
     canva.appendChild(headerDiv);
 
-    // Células de horas
-    for (let i = 0; i < 24; i++) {
+        for (let i = 0; i < 24; i++) {
         const dataAtual = new Date(ano, mes, dia, i, 0, 0, 0);
         criarCelulaHora(canva, dataAtual, i, true);
     }
@@ -114,7 +103,6 @@ function loadCalendarioDiario() {
     cabecalhoNomesDiaSemana();
 }
 
-// ========== FUNÇÕES AUXILIARES DE CRIAÇÃO DE ELEMENTOS ==========
 function configurarGridCalendario(elemento, colunas, linhas, classe) {
     elemento.innerHTML = "";
     elemento.style.gridTemplateColumns = colunas;
@@ -132,6 +120,7 @@ function criarDiaCalendario(container, dia, cinza = false, destaque = false) {
 
     diaDiv.innerHTML = `
             <div style="width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; margin: auto; border-radius: 50%; font-size: 12px; ${estilo} ${estiloDestaque}">${dia}</div>
+            <div class="dia-content-wrapper"></div>
         `;
 
     container.appendChild(diaDiv);
@@ -169,7 +158,6 @@ function criarCelulaHora(container, data, hora, mostrarHora) {
     container.appendChild(celulaHora);
 }
 
-// ========== CONTROLE DE NAVEGAÇÃO ==========
 function atualizarCalendario() {
     const ano = dataAtualCalendario.getFullYear();
     const mes = nomeMeses[dataAtualCalendario.getMonth()];
@@ -206,7 +194,6 @@ function irParaHoje() {
     atualizarCalendario();
 }
 
-// ========== CONTROLE DE VISUALIZAÇÃO ==========
 function alterarModoVisualizacao(novoModo) {
     modoVisualizacao = novoModo;
     atualizarBotaoCalendario(modoVisualizacao);
@@ -245,13 +232,10 @@ function criarDivCabecalho(container, texto) {
     container.appendChild(diaDiv);
 }
 
-// ========== RENDERIZAÇÃO DE TAREFAS ==========
 function renderizarTarefas() {
-    // Limpar tarefas existentes
-    document.querySelectorAll('.tarefa-evento').forEach(tarefa => tarefa.remove());
+        document.querySelectorAll('.tarefa-evento').forEach(tarefa => tarefa.remove());
 
-    // Verifica se as tarefas foram carregadas
-    const tarefasCarregadas = typeof obterTarefas === 'function' ? obterTarefas() : [];
+        const tarefasCarregadas = typeof obterTarefas === 'function' ? obterTarefas() : [];
 
     tarefasCarregadas.forEach(tarefa => {
         const dataTarefa = new Date(tarefa.data + 'T' + tarefa.hora.replace('Z', ''));
@@ -300,12 +284,13 @@ function renderizarTarefaSemanalDiaria(tarefa, dataTarefa, corPrioridade, estilo
 }
 
 function adicionarTarefaMensal(celula, tarefa, dataTarefa, corPrioridade, estiloRealizada) {
-    let container = celula.querySelector('.tarefas-container-mes');
+        const wrapper = celula.querySelector('.dia-content-wrapper');
+    if (!wrapper) return; 
+    let container = wrapper.querySelector('.tarefas-container-mes');
     if (!container) {
         container = document.createElement('div');
         container.classList.add('tarefas-container-mes');
-        celula.appendChild(container);
-    }
+        wrapper.appendChild(container);     }
 
     const tarefaElemento = document.createElement('div');
     tarefaElemento.classList.add('tarefa-evento', 'tarefa-item-mes');
@@ -320,11 +305,6 @@ function adicionarTarefaMensal(celula, tarefa, dataTarefa, corPrioridade, estilo
             ${iconeRecorrente}
         `;
 
-    tarefaElemento.addEventListener('click', () => {
-        if (typeof mostrarDetalhesTarefa === 'function') {
-            mostrarDetalhesTarefa(tarefa);
-        }
-    });
     container.appendChild(tarefaElemento);
 }
 
@@ -333,7 +313,7 @@ function adicionarTarefaNaCelula(celula, tarefa, corPrioridade, estiloRealizada)
     if (!container) {
         container = document.createElement('div');
         container.classList.add('tarefas-container-celula');
-        celula.appendChild(container);
+        container.classList.add('scrollbar');         celula.appendChild(container);
     }
 
     const tarefaElemento = document.createElement('div');
@@ -357,7 +337,6 @@ function adicionarTarefaNaCelula(celula, tarefa, corPrioridade, estiloRealizada)
     container.appendChild(tarefaElemento);
 }
 
-// ========== EVENT LISTENERS ==========
 function configurarEventListeners() {
     document.getElementById("hoje")?.addEventListener("click", irParaHoje);
     document.getElementById("avancar")?.addEventListener("click", () => navegarCalendario(1));
@@ -368,109 +347,98 @@ function configurarEventListeners() {
     document.getElementById("botaoCalendarioMes")?.addEventListener("click", () => alterarModoVisualizacao("mes"));
 }
 
-// ========== ESTILOS CSS ==========
 function adicionarEstilosTarefas() {
     const estilosTarefas = document.createElement('style');
     estilosTarefas.textContent = `
-            .tarefa-evento {
-                padding: 2px 5px;
-                margin: 2px 0;
-                border-radius: 3px;
-                color: white;
-                font-size: 12px;
-                cursor: pointer; 
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: calc(100% - 10px);
-                box-sizing: border-box;
-            }
-            
-            .tarefa-item-mes {
-                width: 100%;
-                text-align: left;
-                padding: 1px 3px;
-                margin: 1px 0;
-                font-size: 10px;
-            }
-            
-            .tarefas-container-mes {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                max-height: calc(100% - 20px);
-                overflow-y: auto;
-                margin-top: 2px;
-            }
-            
-            .icone-recorrente {
-                font-size: 10px;
-                margin-left: 3px;
-            }
-            
-            .visualizacao-semanal .celula-hora-diaria,
-            .visualizacao-diaria .celula-hora-diaria {
-                height: auto;
-                min-height: 30px;
-                position: relative;
-                padding-right: 5px;
-            }
-            
-            .visualizacao-diaria .celula-hora-diaria {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .visualizacao-diaria .celula-hora-diaria .indicador-hora-diaria {
-                align-self: flex-start;
-                margin-bottom: 3px; 
-            }
-            
-            .visualizacao-diaria .tarefa-evento {
-                width: 100%;
-                max-width: calc(100% - 5px);
-            }
-            
-            .tarefas-container-celula {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 2px;
-                margin-top: 2px;
-            }
-            
-            .tarefa-evento[style*="background-color: #B71C1C"],
-            .tarefa-evento[style*="background-color: #F44336"] {
-                color: white;
-            }
-            
-            .tarefa-evento[style*="background-color: #FFEB3B"] {
-                color: #212121;
-            }
-            
-            .tarefa-evento[style*="background-color: #4CAF50"],
-            .tarefa-evento[style*="background-color: #8BC34A"] {
-                color: white;
-            }
-        `;
+        /* Regra geral para o contêiner de tarefas em todas as visualizações */
+        .tarefa-evento {
+            padding: 2px 5px;
+            margin: 0; /* A margem será controlada pelo 'gap' do container flex */
+            border-radius: 3px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            flex-shrink: 0; /* Impede que a tarefa encolha verticalmente */
+        }
+        
+        .tarefa-evento > span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .tarefa-item-mes {
+            font-size: 10px;
+            padding: 1px 3px;
+            margin: 1px 0;
+            text-align: left;
+        }
+        
+        .tarefas-container-mes {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-height: calc(100% - 20px);
+            overflow-y: auto;
+            margin-top: 2px;
+        }
+        
+        .icone-recorrente {
+            font-size: 10px;
+            margin-left: 3px;
+            flex-shrink: 0;
+        }
+        
+        /* Regra principal para as células de hora */
+        .visualizacao-semanal .celula-hora-diaria,
+        .visualizacao-diaria .celula-hora-diaria {
+            height: 100%; /* Força a célula a ter a altura da linha da grade */
+            min-height: 30px;
+            position: relative;
+            padding: 2px 4px;
+        }
+        
+        /* Alinhamento da view diária (hora ao lado das tarefas) */
+        .visualizacao-diaria .celula-hora-diaria {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Contêiner que agrupa as tarefas dentro de uma célula */
+        .tarefas-container-celula {
+            height: 100%;
+            display: flex;
+            flex-direction: row; /* MUDADO PARA 'row' */
+            gap: 2px;
+            overflow: hidden; /* Overflow vertical não é mais necessário */
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        /* Nova regra para ajustar as tarefas que estão lado a lado */
+        .tarefas-container-celula .tarefa-evento {
+            flex: 1; /* Faz cada tarefa ocupar uma parte igual do espaço */
+        }
+    `;
     document.head.appendChild(estilosTarefas);
 }
 
-// Função para criar o modal de tarefa
 function criarModalTarefa() {
-    // Verificar se o modal já existe
     let modalExistente = document.getElementById("modalTarefa");
     if (modalExistente) {
-        // Se o modal já existe, remover para recriar limpo
-        modalExistente.remove();
+                modalExistente.remove();
     }
 
-    // Criar elemento do modal
-    const modalDiv = document.createElement('div');
+        const modalDiv = document.createElement('div');
     modalDiv.className = 'modal fade';
     modalDiv.id = 'modalTarefa';
     modalDiv.tabIndex = '-1';
@@ -540,13 +508,11 @@ function criarModalTarefa() {
         </div>
     `;
 
-    // Adicionar o modal ao corpo do documento
-    document.body.appendChild(modalDiv);
+        document.body.appendChild(modalDiv);
 
     instanciaModalTarefa = new bootstrap.Modal(document.getElementById('modalTarefa'));
 
-    // Configurar eventos
-    const btnSalvar = document.getElementById('btnSalvarTarefa');
+        const btnSalvar = document.getElementById('btnSalvarTarefa');
     const btnExcluir = document.getElementById('btnExcluirTarefa');
     const formTarefa = document.getElementById('formTarefa');
 
@@ -554,7 +520,7 @@ function criarModalTarefa() {
         console.log("Botão salvar clicado");
         if (formTarefa.checkValidity()) {
             salvarTarefa();
-            modal.hide();
+                        instanciaModalTarefa.hide();
         } else {
             formTarefa.reportValidity();
         }
@@ -563,12 +529,10 @@ function criarModalTarefa() {
     btnExcluir.addEventListener('click', () => {
         if (tarefaEditandoId !== null) {
             excluirTarefa(tarefaEditandoId);
-            modal.hide();
-        }
+            instanciaModalTarefa.hide();         }
     });
 
-    // Ajustar estado do botão excluir quando o modal é aberto
-    document.getElementById('modalTarefa').addEventListener('show.bs.modal', function (event) {
+        document.getElementById('modalTarefa').addEventListener('show.bs.modal', function (event) {
         const botaoExcluir = document.getElementById('btnExcluirTarefa');
         const areaBotaoConcluido = document.getElementById('areaBotaoConcluido');
 
@@ -584,42 +548,32 @@ function criarModalTarefa() {
     });
 }
 
-// Função para abrir o modal para adicionar uma nova tarefa em uma data específica
 function abrirModalNovaTarefa(data, hora = '08:00') {
-    tarefaEditandoId = null; // Indicar que estamos criando uma nova tarefa
+    tarefaEditandoId = null; 
+        criarModalTarefa();
 
-    // Garantir que o modal seja criado ou recriado para ter os listeners corretos
-    criarModalTarefa();
+        const dataFormatada = formatarDataParaInput(data);
 
-    // Formatar a data para o input date
-    const dataFormatada = formatarDataParaInput(data);
-
-    // Limpar e configurar o formulário para uma nova tarefa
-    document.getElementById('tituloTarefa').value = '';
+        document.getElementById('tituloTarefa').value = '';
     document.getElementById('dataTarefa').value = dataFormatada;
     document.getElementById('horaTarefa').value = hora + ':00';
     document.getElementById('prioridadeTarefa').value = 'Média';
     document.getElementById('descricaoTarefa').value = '';
     document.getElementById('recorrenciaTarefa').value = 'Não repete';
 
-    // Esconder botão de excluir para novas tarefas
-    document.getElementById('btnExcluirTarefa').classList.add('d-none');
+        document.getElementById('btnExcluirTarefa').classList.add('d-none');
 
     instanciaModalTarefa?.show();
 }
 
-// Função para abrir o modal de edição de tarefa
 function abrirModalEditarTarefa(idTarefa) {
     const tarefa = tarefas.find(t => t.id === idTarefa);
     if (!tarefa) return;
 
-    // Garantir que o modal seja criado ou recriado para ter os listeners corretos
-    criarModalTarefa();
+        criarModalTarefa();
 
-    tarefaEditandoId = idTarefa; // Armazenar o ID da tarefa que está sendo editada
-
-    // Preencher o formulário com os dados da tarefa
-    document.getElementById('tituloTarefa').value = tarefa.titulo;
+    tarefaEditandoId = idTarefa; 
+        document.getElementById('tituloTarefa').value = tarefa.titulo;
     document.getElementById('dataTarefa').value = tarefa.data;
     document.getElementById('horaTarefa').value = tarefa.hora;
     document.getElementById('prioridadeTarefa').value = tarefa.prioridade;
@@ -627,139 +581,176 @@ function abrirModalEditarTarefa(idTarefa) {
     document.getElementById('tarefaRealizada').checked = tarefa.realizada || false;
     document.getElementById('recorrenciaTarefa').value = tarefa.recorrencia || 'Não repete';
 
-    // Mostrar botão de excluir para edição de tarefas
-    document.getElementById('btnExcluirTarefa').classList.remove('d-none');
+        document.getElementById('btnExcluirTarefa').classList.remove('d-none');
     document.getElementById('areaBotaoConcluido').classList.remove('d-none');
 
     instanciaModalTarefa?.show();
 }
 
 
-function salvarTarefa() { 
-    const titulo = document.getElementById('tituloTarefa').value; 
-    const data = document.getElementById('dataTarefa').value; 
-    const hora = document.getElementById('horaTarefa').value; 
-    const prioridade = document.getElementById('prioridadeTarefa').value; 
-    const descricao = document.getElementById('descricaoTarefa').value; 
-    const recorrencia = document.getElementById('recorrenciaTarefa').value; 
-    const realizada = document.getElementById('tarefaRealizada')?.checked || false; 
+function salvarTarefa() {
+    const titulo = document.getElementById('tituloTarefa').value;
+    const data = document.getElementById('dataTarefa').value;
+    const hora = document.getElementById('horaTarefa').value;
+    const prioridade = document.getElementById('prioridadeTarefa').value;
+    const descricao = document.getElementById('descricaoTarefa').value;
+    const recorrencia = document.getElementById('recorrenciaTarefa').value;
+    const realizada = document.getElementById('tarefaRealizada')?.checked || false;
 
-    const userId = typeof currentLoggedInUserId !== 'undefined' ? currentLoggedInUserId : "defaultUser"; 
+    const userId = typeof currentLoggedInUserId !== 'undefined' ? currentLoggedInUserId : "defaultUser";
 
-    if (tarefaEditandoId !== null) { 
-        const index = tarefas.findIndex(t => t.id === tarefaEditandoId); 
-        const tarefaEditada = { 
-            ...tarefas[index], 
-            titulo, 
-            data, 
-            hora, 
-            prioridade, 
-            descricao, 
-            recorrencia, 
-            realizada 
+    if (tarefaEditandoId !== null) {
+                const index = tarefas.findIndex(t => t.id === tarefaEditandoId);
+        if (index === -1) return;
+
+        const tarefaOriginal = tarefas[index];
+
+        const tarefaEditada = {
+            ...tarefaOriginal,
+            titulo, data, hora, prioridade, descricao, recorrencia, realizada
         };
 
-        fetch(`http://localhost:3000/tarefas/${tarefaEditandoId}`, { 
-            method: 'PUT', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(tarefaEditada) 
+        if (!tarefaOriginal.realizada && tarefaEditada.realizada) {
+                        if (typeof window.addXp === 'function') {
+                const xpGanho = tarefaEditada.exp || 10;                 window.addXp(xpGanho);                 console.log(`Parabéns! Você ganhou ${xpGanho} XP por concluir a tarefa!`);
+            }
+        }
+                                        if (tarefaEditada.recorrencia !== 'Não repete' && !tarefaOriginal.realizada && tarefaEditada.realizada) {
+
+                        if (tarefaEditada.serieId) {
+                                const tarefasDaSerie = tarefas
+                    .filter(t => t.serieId === tarefaEditada.serieId)
+                    .sort((a, b) => new Date(a.data) - new Date(b.data));
+
+                const indexAtualNaSerie = tarefasDaSerie.findIndex(t => t.id === tarefaEditada.id);
+
+                let sequenciaAnterior = 0;
+                                if (indexAtualNaSerie > 0) {
+                    const tarefaAnterior = tarefasDaSerie[indexAtualNaSerie - 1];
+                                        if (tarefaAnterior.realizada) {
+                        sequenciaAnterior = tarefaAnterior.sequencia || 0;
+                    }
+                }
+                                tarefaEditada.sequencia = sequenciaAnterior + 1;
+            } else {
+                                tarefaEditada.sequencia = (tarefaOriginal.sequencia || 0) + 1;
+            }
+        } else if (tarefaOriginal.realizada && !tarefaEditada.realizada) {
+                                    tarefaEditada.sequencia = 0;
+        }
+
+        fetch(`http://localhost:3000/tarefas/${tarefaEditandoId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(tarefaEditada)
         })
-            .then(response => response.json()) 
+            .then(response => response.json())
             .then(() => {
-                recarregarTarefas(); 
-                renderizarTarefas(); 
-                if (instanciaModalTarefa) instanciaModalTarefa.hide(); 
-                tarefaEditandoId = null; 
+                recarregarTarefas();
+                if (instanciaModalTarefa) instanciaModalTarefa.hide();
+                tarefaEditandoId = null;
             })
-            .catch(error => console.error('Erro ao editar tarefa:', error)); 
+            .catch(error => console.error('Erro ao editar tarefa:', error));
 
     } else {
-        
-        const novaTarefa = { 
-            titulo, 
-            data, 
-            hora, 
-            prioridade, 
-            descricao, 
-            realizada: false, 
-            recorrencia, 
-            exp: 0.5, 
-            sequencia: 0, 
-            userId 
+                const serieId = recorrencia !== 'Não repete' ? `serie-${Date.now()}` : null;
+
+        const novaTarefa = {
+            titulo, data, hora, prioridade, descricao, realizada: false, recorrencia,
+            exp: 10,             sequencia: 0, userId, serieId: serieId
         };
 
-        fetch('http://localhost:3000/tarefas', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(novaTarefa) 
+        fetch('http://localhost:3000/tarefas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novaTarefa)
         })
-            .then(response => response.json()) 
-            .then(() => {
-                if (recorrencia !== "Não repete") { 
-                    
-                    gerarTarefasRecorrentes({ ...novaTarefa, data, userId }); 
+            .then(response => response.json())
+            .then((tarefaCriada) => {
+                if (recorrencia !== "Não repete") {
+                    gerarTarefasRecorrentes(tarefaCriada);
                 }
-                recarregarTarefas(); 
-                renderizarTarefas(); 
-                if (instanciaModalTarefa) instanciaModalTarefa.hide(); 
+                recarregarTarefas();
+                if (instanciaModalTarefa) instanciaModalTarefa.hide();
             })
-            .catch(error => console.error('Erro ao salvar nova tarefa:', error)); 
+            .catch(error => console.error('Erro ao salvar nova tarefa:', error));
     }
 }
 
-function gerarTarefasRecorrentes(tarefaBase) { 
-    const dataOriginal = new Date(tarefaBase.data); 
-    const ano = dataOriginal.getFullYear(); 
-    const mes = dataOriginal.getMonth(); 
-    const dia = dataOriginal.getDate(); 
-    const tarefasAGerar = []; 
+function gerarTarefasRecorrentes(tarefaBase) {
+        const dataOriginal = new Date(tarefaBase.data + 'T00:00:00');
+    const anoOriginal = dataOriginal.getFullYear();
+    const mesOriginal = dataOriginal.getMonth(); 
+    const tarefasAGerar = [];
 
-    if (tarefaBase.recorrencia === 'Diariamente') { 
-        const diasNoMes = new Date(ano, mes + 1, 0).getDate(); 
-        for (let d = 1; d <= diasNoMes; d++) { 
-            if (d === dia) continue; 
-            const novaData = new Date(ano, mes, d); 
-            tarefasAGerar.push({ ...tarefaBase, data: formatarDataParaInput(novaData), userId: tarefaBase.userId }); 
-        }
-    } else if (tarefaBase.recorrencia === 'Semanalmente') { 
-        const diaSemanaOriginal = dataOriginal.getDay(); 
-        const ultimoDiaMes = new Date(ano, mes + 1, 0); 
+        const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
 
-        let dataAtual = new Date(dataOriginal); 
+    if (tarefaBase.recorrencia === 'Diariamente') {
+        let dataAtual = new Date(dataOriginal);
 
-        while (true) { 
-            dataAtual.setDate(dataAtual.getDate() + 7); 
+                while (dataAtual.getMonth() === mesOriginal) {
+                        dataAtual.setDate(dataAtual.getDate() + 1);
 
-            if (dataAtual > ultimoDiaMes) break; 
+                        if (dataAtual.getMonth() !== mesOriginal) {
+                break;
+            }
 
-            if (dataAtual.getDay() === diaSemanaOriginal) { 
-                tarefasAGerar.push({ 
-                    ...tarefaBase, 
-                    data: formatarDataParaInput(dataAtual), 
-                    userId: tarefaBase.userId 
-                });
+            const novaData = new Date(dataAtual);
+            if (novaData >= hoje) {
+                tarefasAGerar.push({ ...tarefaBase, data: formatarDataParaInput(novaData) });
             }
         }
-    } else if (tarefaBase.recorrencia === 'Mensalmente') { 
-        for (let m = 0; m < 12; m++) { 
-            if (m === mes) continue; 
-            const novaData = new Date(ano, m, dia); 
-            if (novaData.getDate() === dia) { 
-                tarefasAGerar.push({ ...tarefaBase, data: formatarDataParaInput(novaData), userId: tarefaBase.userId }); 
+    } else if (tarefaBase.recorrencia === 'Semanalmente') {
+        let dataAtual = new Date(dataOriginal);
+
+                while (dataAtual.getMonth() === mesOriginal) {
+                        dataAtual.setDate(dataAtual.getDate() + 7);
+
+                        if (dataAtual.getMonth() !== mesOriginal) {
+                break;
+            }
+
+            const novaData = new Date(dataAtual);
+            if (novaData >= hoje) {
+                tarefasAGerar.push({ ...tarefaBase, data: formatarDataParaInput(novaData) });
+            }
+        }
+    } else if (tarefaBase.recorrencia === 'Mensalmente') {
+                const diaDaSemanaOriginal = dataOriginal.getDay();
+        const ordinalDaSemana = Math.ceil(dataOriginal.getDate() / 7);
+
+        let dataDeReferencia = new Date(dataOriginal);
+
+        while (dataDeReferencia.getFullYear() === anoOriginal) {
+            dataDeReferencia.setMonth(dataDeReferencia.getMonth() + 1, 1);
+            const mesAlvo = dataDeReferencia.getMonth();
+            const anoAlvo = dataDeReferencia.getFullYear();
+
+            if (anoAlvo > anoOriginal) break;
+
+            const primeiroDiaDoMes = new Date(anoAlvo, mesAlvo, 1);
+            const diaDaSemanaDoPrimeiroDia = primeiroDiaDoMes.getDay();
+            let dataDaPrimeiraOcorrencia = 1 + (diaDaSemanaOriginal - diaDaSemanaDoPrimeiroDia + 7) % 7;
+            let diaFinal = dataDaPrimeiraOcorrencia + ((ordinalDaSemana - 1) * 7);
+            let novaData = new Date(anoAlvo, mesAlvo, diaFinal);
+
+            if (novaData.getMonth() === mesAlvo && novaData >= hoje) {
+                tarefasAGerar.push({ ...tarefaBase, data: formatarDataParaInput(novaData) });
             }
         }
     }
 
-    // Enviar todas as tarefas geradas
-    tarefasAGerar.forEach(tarefa => { 
-        delete tarefa.id; 
-        tarefa.realizada = false; 
+        tarefasAGerar.forEach(tarefa => {
+        delete tarefa.id;
+        tarefa.realizada = false;
+        tarefa.userId = tarefaBase.userId;
 
-        fetch('http://localhost:3000/tarefas', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify(tarefa) 
-        }).catch(err => console.error('Erro ao criar tarefa recorrente:', err)); 
+        fetch('http://localhost:3000/tarefas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(tarefa)
+        }).catch(err => console.error('Erro ao criar tarefa recorrente:', err));
     });
 }
 
@@ -775,7 +766,6 @@ function excluirTarefa(idTarefa) {
         .catch(error => console.error('Erro ao excluir tarefa:', error));
 }
 
-// Função auxiliar para formatar a data para o input date (YYYY-MM-DD)
 function formatarDataParaInput(data) {
     const d = new Date(data);
     const ano = d.getFullYear();
@@ -784,34 +774,25 @@ function formatarDataParaInput(data) {
     return `${ano}-${mes}-${dia}`;
 }
 
-// Função para exibir detalhes da tarefa quando clicada
 function mostrarDetalhesTarefa(tarefa) {
     abrirModalEditarTarefa(tarefa.id);
 }
 
-// Adicionar evento de clique nas células do calendário
 function configurarEventosCalendario() {
-    // Configurar eventos para calendário mensal
-    document.querySelectorAll('.cardDiaCalendario').forEach(celula => {
-        // Remover qualquer evento de clique existente para evitar duplicação
-        celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
+        document.querySelectorAll('.cardDiaCalendario').forEach(celula => {
+                celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
 
-        // Adicionar novo evento de duplo clique
-        celula.eventoCliqueCalendario = function (e) {
-            // Ignorar se o clique foi em uma tarefa existente
-            if (e.target.closest('.tarefa-evento')) return;
+                celula.eventoCliqueCalendario = function (e) {
+                        if (e.target.closest('.tarefa-evento')) return;
 
-            // Obter o número do dia clicado
-            const diaTexto = this.querySelector('div')?.textContent;
-            if (!diaTexto || isNaN(parseInt(diaTexto))) return;
+                        const diaTexto = this.querySelector('div')?.textContent;
+
+                        if (!diaTexto || isNaN(parseInt(diaTexto))) return;
+            if (this.querySelector('div[style*="color: gray"]')) return;
 
             const dia = parseInt(diaTexto);
             const ano = dataAtualCalendario.getFullYear();
             const mes = dataAtualCalendario.getMonth();
-
-            // Verificar se o dia pertence ao mês atual
-            // Se o dia tem cor cinza (dias do mês anterior ou próximo), não adicionar tarefa
-            if (this.querySelector('div[style*="color: gray"]')) return;
 
             const data = new Date(ano, mes, dia);
             abrirModalNovaTarefa(data);
@@ -820,54 +801,50 @@ function configurarEventosCalendario() {
         celula.addEventListener('dblclick', celula.eventoCliqueCalendario);
     });
 
-    // Configurar eventos para calendário diário e semanal
-    document.querySelectorAll('.celula-hora-diaria').forEach(celula => {
-        // Remover qualquer evento de clique existente para evitar duplicação
-        celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
+        document.querySelectorAll('.celula-hora-diaria').forEach(celula => {
+                celula.removeEventListener('dblclick', celula.eventoCliqueCalendario);
 
-        // Adicionar novo evento de duplo clique
-        celula.eventoCliqueCalendario = function (e) {
-            // Ignorar se o clique foi em uma tarefa existente
-            if (e.target.closest('.tarefa-evento')) return;
+                celula.eventoCliqueCalendario = function (e) {
+                        if (e.target.closest('.tarefa-evento')) return;
 
-            // Obter a data e hora da célula
-            const dataStr = this.dataset.data;
+                        const dataStr = this.dataset.data;
             const horaStr = this.dataset.hora;
 
             if (!dataStr) return;
 
-            const data = new Date(dataStr);
+                                                const data = new Date(dataStr + 'T00:00:00');
             abrirModalNovaTarefa(data, horaStr?.split(':')[0] || '08');
         };
 
         celula.addEventListener('dblclick', celula.eventoCliqueCalendario);
     });
 
-    // Configurar cliques em tarefas existentes
-    document.querySelectorAll('.tarefa-evento').forEach(tarefaEl => {
-        tarefaEl.addEventListener('click', function (e) {
-            e.stopPropagation(); // Impedir propagação do evento
+        document.querySelectorAll('.tarefa-evento').forEach(tarefaEl => {
+                if (tarefaEl.eventoCliqueTarefa) {
+            tarefaEl.removeEventListener('click', tarefaEl.eventoCliqueTarefa);
+        }
 
-            const idTarefa = parseInt(this.getAttribute('data-id-tarefa'));
-            if (!isNaN(idTarefa)) {
+                tarefaEl.eventoCliqueTarefa = function (e) {
+            e.stopPropagation(); 
+            const idTarefa = this.getAttribute('data-id-tarefa');
+            if (idTarefa) {
                 const tarefa = tarefas.find(t => t.id === idTarefa);
                 if (tarefa) {
                     mostrarDetalhesTarefa(tarefa);
                 }
             }
-        });
+        };
+
+                tarefaEl.addEventListener('click', tarefaEl.eventoCliqueTarefa);
     });
 }
 
-// Atualizar a função original de renderização de calendário para adicionar os eventos de clique
 const atualizarCalendarioOriginal2 = atualizarCalendario;
 atualizarCalendario = function () {
     atualizarCalendarioOriginal2();
-    // Adicionar um pequeno atraso para garantir que o DOM foi atualizado
-    setTimeout(() => {
+        setTimeout(() => {
         configurarEventosCalendario();
     }, 100);
 };
 
-// Chamar renderizarTarefas para exibir as tarefas já existentes
 renderizarTarefas();

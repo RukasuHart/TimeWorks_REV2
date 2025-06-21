@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const openModalImg = document.querySelector('.openmodalimg');
     const userIdDisplay = document.querySelector('.userid');
     const userLevelDisplay = document.getElementById('userlevel');
-    const userXpDisplay = document.querySelector('.userxp');
-    const xpBarElement = document.querySelector(".xpbarimage");
-    const xpPercentElement = document.querySelector(".xpbartext");
-
+    
+    // const userXpDisplay = document.querySelector('.userxp');
 
     const editProfileBtn = document.getElementById('edit-profile-btn');
     const editModal = document.getElementById('edit-modal');
@@ -19,52 +17,64 @@ document.addEventListener('DOMContentLoaded', function () {
     const usernameInput = document.getElementById('username-input');
     const profileOptions = document.querySelectorAll('.profile-option');
 
-    let currentUserId = localStorage.getItem('currentUserId'); 
+    let currentUserId = localStorage.getItem('currentUserId');
     let userData = {};
 
-    const urlUsers = `http://localhost:3000/users/${currentUserId}`; 
+    const urlUsers = `http://localhost:3000/users/${currentUserId}`;
 
-//Buscar dados do usuário
-
-    async function fetchUserData() { 
+    async function fetchUserData() {
         try {
-            const response = await fetch(urlUsers); 
-            if (!response.ok) { 
-                throw new Error(`HTTP error! status: ${response.status}`); 
+            let response = await fetch(urlUsers);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            let freshUserData = await response.json();
+
+            if (!freshUserData.unlockedAchievements) {
+                freshUserData.unlockedAchievements = [];
             }
-            userData = await response.json(); 
-            updateProfileDisplay(); 
-            updateXpDisplay(); 
+            
+            await checkAllAchievements(freshUserData, obterTarefas());
+
+            response = await fetch(urlUsers);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            userData = await response.json();
+
+            updateProfileDisplay();
+            updateXpDisplay();
+            renderUserAchievements(userData); 
+
         } catch (error) {
-            console.error("Error fetching user data:", error); 
+            console.error("Erro ao buscar dados do usuário ou processar conquistas:", error);
             userData = {
                 name: "Usuário-teste",
                 id: "#000000",
                 profilePic: "img/man.png",
                 xp: 0,
-                level: 1
+                level: 1,
+                unlockedAchievements: []
             };
-            updateProfileDisplay(); 
-            updateXpDisplay(); 
+            updateProfileDisplay();
+            updateXpDisplay();
+            renderUserAchievements(userData);
         }
     }
 
-    function updateProfileDisplay() { 
-        usernameDisplay.textContent = userData.name || "Usuário-teste"; 
-        userIdDisplay.textContent = userData.id || "#000000"; 
-        profileImg.src = userData.profilePic || "img/man.png"; 
-        openModalImg.src = userData.profilePic || "img/man.png"; 
+    function updateProfileDisplay() {
+        usernameDisplay.textContent = userData.name || "Usuário-teste";
+        userIdDisplay.textContent = userData.id || "#000000";
+        profileImg.src = userData.profilePic || "img/man.png";
+        openModalImg.src = userData.profilePic || "img/man.png";
     }
 
-    function updateXpDisplay() { 
-        userXpDisplay.textContent = `XP: ${userData.xp || 0}`; 
-        userLevelDisplay.textContent = `Nível: ${userData.level || 1}`; 
-        calXpNextLv(userData.level || 1); 
-        xpbar(); 
+    function updateXpDisplay() {
+        // userXpDisplay.textContent = `XP: ${userData.xp || 0}`; 
+        userLevelDisplay.textContent = `Nível: ${userData.level || 1}`;
+        calXpNextLv(userData.level || 1);
+        xpbar();
     }
 
     openModalBtn.addEventListener('click', () => {
         modal.showModal();
+        fetchUserData(); 
     });
 
     closeModalBtn.addEventListener('click', () => {
@@ -78,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
         usernameInput.value = userData.name;
         editModal.style.display = 'flex';
 
-        selectedProfilePic = userData.profilePic; 
+        selectedProfilePic = userData.profilePic;
         profileOptions.forEach(option => {
             option.classList.remove('selected');
             if (option.getAttribute('data-value') === userData.profilePic) {
@@ -100,21 +110,21 @@ document.addEventListener('DOMContentLoaded', function () {
         userData.profilePic = selectedProfilePic || userData.profilePic;
 
         try {
-            const response = await fetch(urlUsers, { 
-                method: 'PUT', 
+            const response = await fetch(urlUsers, {
+                method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json' 
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(userData) 
+                body: JSON.stringify(userData)
             });
-            if (!response.ok) { 
-                throw new Error(`HTTP error! status: ${response.status}`); 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            await response.json(); 
-            updateProfileDisplay(); 
-            editModal.style.display = 'none'; 
+            await response.json();
+            updateProfileDisplay();
+            editModal.style.display = 'none';
         } catch (error) {
-            console.error("Error saving user data:", error); 
+            console.error("Error saving user data:", error);
         }
     });
 
@@ -123,178 +133,64 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     let xpToNextLevel = 100;
-    let calcpercent = 0;
 
-
-    //Calcula o XP necessário para o próximo nível
-    function calXpNextLv(level) { 
-        xpToNextLevel = Math.floor(100 * Math.pow(level, 1.3)); 
+    function calXpNextLv(level) {
+        xpToNextLevel = Math.floor(100 * Math.pow(level, 1.3));
     }
 
-//Adiciona xp ao botao ser clicado (aguardar o botão para integração)
-    async function addXp(amount) { 
-        userData.xp = (userData.xp || 0) + amount; 
-        await saveUserData(); 
-        updateXpDisplay(); 
-        checkLevelUp(); 
+    async function addXp(amount) {
+        userData.xp = (userData.xp || 0) + amount;
+        checkLevelUp();
+        await saveUserData();
+        updateXpDisplay();
     }
-//Verifica se o usuário pode subir de nível
-    async function checkLevelUp() { 
+
+    function checkLevelUp() {
         if (userData.xp >= xpToNextLevel) {
-            userData.xp -= xpToNextLevel; 
-            userData.level = (userData.level || 1) + 1; 
-            calXpNextLv(userData.level); 
-            console.log(`Parabéns! Você subiu para o nível ${userData.level}!`); 
-            await saveUserData(); 
-            updateXpDisplay(); 
+            userData.xp -= xpToNextLevel;
+            userData.level = (userData.level || 1) + 1;
+            calXpNextLv(userData.level);
+            console.log(`Parabéns! Você subiu para o nível ${userData.level}!`);
         }
     }
+    
+    function xpbar() {
+        const xpBarFill = document.querySelector('.xp-bar-fill');
+        const xpBarText = document.querySelector('.xp-bar-text');
 
-    // Atualiza a barra de XP a medida
-    function xpbar() { 
-        calcpercent = (userData.xp || 0) * 100 / xpToNextLevel; 
-
-        let imageSrc = "img/xp0.png"; 
-        if (calcpercent >= 25 && calcpercent < 50) { 
-            imageSrc = "img/xp25.png"; 
-        } else if (calcpercent >= 50 && calcpercent < 75) { 
-            imageSrc = "img/xp50.png"; 
-        } else if (calcpercent >= 75 && calcpercent < 100) { 
-            imageSrc = "img/xp75.png"; 
-        } else if (calcpercent >= 100) { 
-            imageSrc = "img/xp100.png"; 
+        if (!xpBarFill || !xpBarText) {
+            return;
         }
-        xpBarElement.innerHTML = `<img src="${imageSrc}" alt="xpbar" class="xpbarclass"> <p class="xpbartext">${Math.floor(calcpercent)}%</p>`; 
+
+        if (xpToNextLevel === 0) {
+            return;
+        }
+        
+        const calcpercent = Math.min(100, (userData.xp || 0) * 100 / xpToNextLevel);
+
+        xpBarFill.style.width = `${calcpercent}%`;
+        xpBarText.textContent = `${Math.floor(calcpercent)}%`;
     }
 
-    // Função para salvar os dados do usuário
-    async function saveUserData() { 
+    async function saveUserData() {
         try {
-            const response = await fetch(urlUsers, { 
-                method: 'PUT', 
+            const response = await fetch(urlUsers, {
+                method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json' 
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(userData) 
+                body: JSON.stringify(userData)
             });
-            if (!response.ok) { 
-                throw new Error(`HTTP error! status: ${response.status}`); 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return await response.json(); 
+            return await response.json();
         } catch (error) {
-            console.error("Error saving user data:", error); 
+            console.error("Error saving user data:", error);
         }
     }
 
+    fetchUserData();
+    window.addXp = addXp;
 
-
-
-
-//Cards das conquistas
-const conquistasData = {
-        "conquistas": [
-            {
-                "id": 1,
-                "conquista": "2 SEMANAS",
-                "descrição": "concluindo com sucesso uma tarefa recorrente de prioridade MUITO ALTA"
-            },
-            {
-                "id": 2,
-                "conquista": "2 SEMANAS",
-                "descrição": "concluindo com sucesso uma tarefa de prioridade ALTA"
-            },
-            {
-                "id": 3,
-                "conquista": "1 MÊS",
-                "descrição": "concluindo com sucesso uma tarefa de prioridade MUITO ALTA",
-            },
-            {
-                "id": 4,
-                "conquista": "Nível 10",
-                "descrição": "Você atingiu o nível 10, parabéns!",
-            },
-            {
-                "id": 5,
-                "conquista": "Nível 30",
-                "descrição": "Você atingiu o nível 30, parabéns!"
-            },
-            {
-                "id": 6,
-                "conquista": "Nível 50",
-                "descrição": "Você atingiu o nível 50, parabéns!"
-            },
-            {
-                "id": 7,
-                "conquista": "Nível 80",
-                "descrição": "Você atingiu o nível 80, parabéns!"
-            },
-            {
-                "id": 8,
-                "conquista": "Nível 100",
-                "descrição": "Você atingiu o nível 100, parabéns!"
-            },
-            {
-                "id": 9,
-                "conquista": "O início",
-                "descrição": "Crie e complete sua primeira tarefa!",
-            },
-            {
-                "id": 10,
-                "conquista": "Sequência",
-                "descrição": "Consiga sua primeira sequência em uma tarefa recorrent!",
-            }
-        ]
-    };
-    const btnconquistarandom = document.getElementById('conquistarandom');
-    const container = document.getElementById('conquistas-container');
-
-    // Código comentado que poderia ser usado para exibir todas as conquistas de uma vez.
-
-        conquistasData.conquistas.forEach(conquista => {
-            const card = document.createElement('div');
-            card.className = 'card';
-    
-            card.innerHTML = `
-                <img src="img/conquista.png" alt="Ícone Conquista" class="card-image">
-                <div class="card-content">
-                    <p class="card-heading">${conquista.conquista}</p>
-                    <p class="card-body">${conquista.descrição}</p>
-                </div>
-            `;
-    
-            container.appendChild(card);
-        });
-
-   /*
-    let idrandom = 0;
-    // Procura no array de conquistas o objeto que possui id igual ao idrandom gerado aleatoriamente
-    btnconquistarandom.addEventListener('click', () => {
-        idrandom = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-        console.log("O Id aleatorio formado foi:" + idrandom);
-        addconquista(idrandom);
-    });
-
-    function addconquista(idrandom) {
-        let conquista = conquistasData.conquistas.find(c => c.id === idrandom);
-        // Se encontrou a conquista com id aleatório, cria um card para ela
-        if (conquista) {
-            // Cria um novo elemento div para representar o card da conquista
-            const card = document.createElement('div');
-            // Adiciona a classe 'card' ao elemento criado para aplicar estilos CSS
-            card.className = 'card';
-            card.innerHTML = `
-        <img src="img/conquista.png" alt="Ícone Conquista" class="card-image">
-        <div class="card-content">
-            <p class="card-heading">${conquista.conquista}</p>
-            <p class="card-body">${conquista.descrição}</p>
-        </div>
-    `;
-            container.appendChild(card);
-        }
-    }
-*/
-
-    fetchUserData(); 
 });
-
-

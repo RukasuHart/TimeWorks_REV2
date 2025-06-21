@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
-    const registerModalElement = document.getElementById('registerModal'); 
+    const registerModalElement = document.getElementById('registerModal');
     const registerIdDisplay = document.getElementById('registerIdDisplay');
     const registerIdInput = document.getElementById('registerId');
 
@@ -15,11 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
             return `user${newUserIdNumber}`;
         } catch (error) {
             console.error('Erro ao obter o último ID do usuário:', error);
-            return `user${Date.now()}`; 
+            return `user${Date.now()}`;
         }
     }
 
-    
+
     async function updateLastUserId(newNumber) {
         try {
             const response = await fetch('http://localhost:3000/db');
@@ -39,21 +39,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
+
     registerModalElement.addEventListener('show.bs.modal', async () => {
         const generatedId = await getNextUserId();
-        registerIdDisplay.textContent = generatedId; 
-        registerIdInput.value = generatedId;       
+        registerIdDisplay.textContent = generatedId;
+        registerIdInput.value = generatedId;
     });
 
-  
+
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const loginUsername = document.getElementById('loginUsername').value; 
+        const loginUsername = document.getElementById('loginUsername').value;
         const loginPassword = document.getElementById('loginPassword').value;
 
         try {
-            
+
             const response = await fetch(`http://localhost:3000/users?name=${loginUsername}&senha=${loginPassword}`);
             const users = await response.json();
 
@@ -91,7 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: registerUsername,
                 profilePic: profilePic,
                 xp: 0,
-                level: 1
+                level: 1,
+                hasSeenTutorial: false,
+                unlockedAchievements: [] 
             };
 
             const response = await fetch('http://localhost:3000/users', {

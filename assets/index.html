@@ -29,13 +29,6 @@
             <img src="img/logo.png">
         </div>
 
-        <!-- incrementando a to do list -->
-        <div class="todolist">
-            <div class="toggle" onclick="toggleSwitch(this)"></div>
-            <div id="todolist"></div>
-            <div id="overlay"></div>
-        </div>
-
         <nav class="d-flex gap-2 h-100">
             <button class="text-white" id="voltar">&lt;</button>
             <p id="mesAtual"></p>
@@ -51,14 +44,12 @@
 
     </header>
 
-    <div class="flex-grow-1 d-flex">
+    <div class="flex-grow-1 d-flex main-content-wrapper">
 
         <aside class="p-3">
-            <div style="height: 40%;" id="sequenciaTarefas"></div>
+            <div id="sequenciaTarefas"></div>
 
-            <div class="p-2 my-2 rounded text-white">
-                Tarefas com prioridade: "Muito alta"
-            </div>
+            <div id="prioridadeTarefasContainer"></div>
         </aside>
 
         <main class="d-flex flex-grow-1 p-2 m-2 rounded flex-column">
@@ -78,7 +69,6 @@
             <button class="buttonclose"><img src="img/close50px.png" alt="closebtn" class="btnc"></button>
         </div>
 
-
         <div id="menu">
             <div class="imgperfildiv">
                 <img src="img/man.png" alt="imagem de perfil" class="imgperfil">
@@ -88,35 +78,33 @@
             </div>
 
             <div class="menutxt">
-                <div class="user-info-line"> <span class="username">Usuário-teste</span><span class="separator"> •
-                    </span>
+                <div class="user-info-line">
+                    <span class="username">Usuário-teste</span><span class="separator"> • </span>
                     <span class="userid">#00000</span><span class="separator"> • </span>
-                    <span id="userlevel">Nível: 0</span><span class="separator"> • </span>
-                    <span class="userxp">XP: 0</span>
+                    <span id="userlevel">Nível: 0</span>
                 </div>
-                <div class="xpbarimage">
-                    <img src="img/xp0.png" alt="xpbar" class="xpbarclass">
-                    <p class="xpbartext">0%</p>
+
+                <div class="xp-bar-container">
+                    <div class="xp-bar-fill"></div>
+                    <span class="xp-bar-text">0%</span>
+                </div>
+            </div>
+
+            <div class="conquistas-section">
+                <h3 class="conquistas-title">Conquistas</h3>
+                <div class="card-container" id="conquistas-container">
                 </div>
             </div>
         </div>
-
-
-        <aside>
-            <div class="card-container" id="conquistas-container">
-            </div>
-        </aside>
 
         <div id="edit-modal" class="edit-modal">
             <div class="edit-modal-content">
                 <span class="close-edit-modal"><img src="img/close25px.png" alt="Fecha Página de edição"></span>
                 <h2>Editar Perfil</h2>
-
                 <div class="form-group">
                     <label for="username-input">Nome de Usuário:</label>
                     <input type="text" id="username-input" class="edit-input">
                 </div>
-
                 <div class="form-group">
                     <label>Escolha sua foto de perfil:</label>
                     <div class="profile-pic-options">
@@ -125,22 +113,82 @@
                         <img src="img/man2.png" class="profile-option" data-value="img/man2.png">
                     </div>
                 </div>
-
                 <button id="save-changes-btn">Salvar Alterações</button>
             </div>
         </div>
-
     </dialog>
 
-
-
+    <div id="tutorialContainer">
+        <div class="welcome-overlay" id="welcome-overlay">
+            <div class="welcome-card">
+                <div class="close-welcome" id="close-welcome"></div>
+                <div class="welcome-content">
+                    <h2>Bem-vindo ao Time Works!</h2>
+                    <p>Este é o seu primeiro acesso. Deseja fazer um tour pelas funcionalidades?</p>
+                    <div class="welcome-buttons">
+                        <button id="start-tutorial" class="btn">Iniciar Tutorial</button>
+                        <button id="skip-welcome" class="btn btn-skip">Pular</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tutorial-overlay" id="tutorial-overlay">
+            <div class="tutorial-carousel">
+                <div class="close-tutorial" id="close-tutorial"></div>
+                <div class="carousel-slides">
+                    <div class="slide active">
+                        <h3>Visão Geral da Página Inicial</h3>
+                        <p>Aqui você tem uma visão geral do seu calendário e das tarefas mais importantes.</p>
+                        <img src="img/home.png" alt="Página Inicial"
+                            style="max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+                    </div>
+                    <div class="slide">
+                        <h3>Edição de Tarefas</h3>
+                        <p>Clique em uma tarefa para ver os detalhes e usar as opções de edição.</p>
+                        <img src="img/edit-task.gif" alt="Edição de Tarefa"
+                            style="max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+                    </div>
+                    <div class="slide">
+                        <h3>Navegação pela Barra Lateral</h3>
+                        <p>Utilize a barra lateral para acessar diferentes seções da aplicação, como perfil e
+                            configurações.</p>
+                        <img src="img/sidebar.gif" alt="Barra Lateral"
+                            style="max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+                    </div>
+                    <div class="slide">
+                        <h3>Seu Perfil e Progresso</h3>
+                        <p>Acesse a seção de perfil para visualizar suas conquistas, nível e outras informações.</p>
+                        <img src="img/profile.gif" alt="Perfil do Usuário"
+                            style="max-width: 100%; height: auto; border: 1px solid #ccc; margin-top: 10px;">
+                    </div>
+                    <div class="slide">
+                        <h3>Pronto para Começar!</h3>
+                        <p>Você completou o tutorial. Explore a aplicação e comece a gerenciar suas tarefas!</p>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <div class="carousel-dots">
+                        <div class="dot active" data-index="0"></div>
+                        <div class="dot" data-index="1"></div>
+                        <div class="dot" data-index="2"></div>
+                        <div class="dot" data-index="3"></div>
+                        <div class="dot" data-index="4"></div> </div>
+                    <div class="carousel-buttons">
+                        <button class="btn btn-prev" id="prev-btn" disabled>Anterior</button>
+                        <button class="btn" id="next-btn">Próximo</button>
+                        <button class="btn btn-skip" id="skip-btn">Pular Tutorial</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/tutorial.js"></script>
     <script src="js/app.js"></script>
     <script src="js/script.js"></script>
     <script src="js/sequencia.js"></script>
+    <script src="js/conquista.js"></script>
     <script src="js/perfil.js"></script>
-    <script src="js/todolist.js"></script>
-
-
+    <script src="js/prioridade.js"></script>
 </body>
 
 </html>

@@ -4,10 +4,12 @@
     margin: 0;
     padding: 0;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 body {
     background-color: #150A35;
+    overflow-y: scroll;
 }
 
 /* Cabeçalho */
@@ -89,9 +91,13 @@ main {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     overflow: hidden;
+    user-select: none;
 }
 
 .cardDiaCalendario {
+    display: flex;
+    flex-direction: column;
+    /* Organiza os itens (número e conteúdo) em uma coluna */
     background-color: whitesmoke;
     padding: 5px;
     border: solid 0.1rem #150A35;
@@ -124,10 +130,6 @@ main {
 
 aside {
     width: 20%;
-}
-
-aside div {
-    background-color: #1E0E45;
 }
 
 .celula-hora {
@@ -196,6 +198,7 @@ aside div {
     position: relative;
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 
 .indicador-hora-diaria {
@@ -250,11 +253,20 @@ aside div {
 }
 
 dialog {
-    width: 50%;
-    height: 50%;
+    width: 65%;
+    /* Aumenta a largura padrão para 65% da tela */
+    max-width: 900px;
+    /* Define uma largura máxima para telas muito grandes */
+    height: auto;
+    /* A altura se ajustará ao conteúdo */
+    min-height: 500px;
+    /* Garante uma altura mínima para o conteúdo caber */
+    max-height: 85vh;
+    /* Impede que o modal seja mais alto que a tela */
     border: none;
     border-radius: 12px;
-    padding: 20px 30px;
+    padding: 25px 35px;
+    /* Aumenta um pouco o espaçamento interno */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -262,6 +274,16 @@ dialog {
     background-color: #fefefe;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     z-index: 999;
+    overflow-y: auto;
+    /* Adiciona rolagem interna se o conteúdo for muito extenso */
+}
+
+@media (max-width: 768px) {
+    dialog {
+        width: 92vw;
+        /* Em telas pequenas, o modal ocupará quase toda a largura */
+        padding: 20px;
+    }
 }
 
 dialog::backdrop {
@@ -312,9 +334,11 @@ dialog::backdrop {
 }
 
 .separator {
-    color: black; /* Ensure separator color is visible */
+    color: black;
+    /* Ensure separator color is visible */
     font-size: 18px;
-    margin: 0 2px; /* Small horizontal margin for the bullet */
+    margin: 0 2px;
+    /* Small horizontal margin for the bullet */
 }
 
 /* Edita o botão de fechar */
@@ -388,8 +412,18 @@ dialog::backdrop {
 }
 
 .edit-modal-content {
-    text-align: center;
-
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-sizing: border-box;
+    /* Garante que o padding não afete a largura total */
+    max-height: 90vh;
+    /* Define uma altura máxima de 90% da tela */
+    overflow-y: auto;
+    /* Adiciona uma barra de rolagem vertical SE necessário */
 }
 
 .edit-input {
@@ -437,16 +471,19 @@ dialog::backdrop {
 }
 
 .card {
-    width: 180px;
-    height: 40px;
-    padding: 5px;
+    min-height: 60px;
+    /* Define uma altura MÍNIMA, permitindo que o card cresça */
+    padding: 10px;
+    /* Aumenta o espaçamento interno */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    background: gray;
+    background: #555555;
+    color: white;
     transition: all 0.3s ease;
     display: grid;
     grid-template-columns: 40px 1fr;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
+    border-radius: 5px;
 }
 
 .card:hover {
@@ -465,20 +502,19 @@ dialog::backdrop {
 .card-content {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    overflow: hidden;
+    gap: 4px;
+    /* Adiciona um pequeno espaço entre o título e a descrição */
 }
 
 .card-container {
-    position: absolute;
-    bottom: 0%;
-    right: 8%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    max-height: 180px;
-    overflow-y: auto;
-    padding: 5px;
+    grid-template-columns: repeat(3, 1fr);
+    /* Define o layout com 3 colunas */
+    gap: 15px;
+    /* Aumenta o espaço entre os cards */
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Edita o botão de lápis que abre a caixa de editar o perfil */
@@ -581,6 +617,8 @@ dialog::backdrop {
 /* Edita as opções de imagem de perfil */
 .profile-pic-options {
     display: flex;
+    flex-wrap: wrap;
+    /* ESSENCIAL: Permite que os itens quebrem para a próxima linha */
     gap: 15px;
     margin-top: 10px;
     justify-content: center;
@@ -642,85 +680,189 @@ dialog::backdrop {
 }
 
 .login-header img {
-    max-height: 80px; /* Ajuste o tamanho da logo conforme necessário */
+    max-height: 80px;
+    /* Ajuste o tamanho da logo conforme necessário */
     width: auto;
 }
 
-/* Comentado pq tá dando conflito com um coidigo igual preexistente
-Estilo dos cards de conquista
-    .card-heading, .card-body {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
+/*aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa*/
 
-    .card-body {
-        font-size: 10px;
-    }
+/* Ajustes no container de informações do usuário para melhor posicionamento da barra */
+.menutxt {
+    width: 100%;
+    max-width: 400px;
+    /* Aumenta a largura máxima para a barra ter mais espaço */
+    padding-top: 10px;
+}
 
-    .card-heading {
-        font-size: 11px;
-    }
-
-    .card {
-        width: 180px;
-        height: 40px;
-        padding: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        background: gray;
-        transition: all 0.3s ease;
-        display: grid;
-        grid-template-columns: 40px 1fr;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .card:hover {
-        background: rgb(110, 110, 110);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    .card-image {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 4px;
-        border: 1px solid #9a639a;
-    }
-
-    .card-content {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        overflow: hidden;
-    }
-
-    .card-container {
-        position: absolute;
-        bottom: 0%;
-        right: 8%;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        max-height: 180px;
-        overflow-y: auto;
-        padding: 5px;
-    }
-        
-Fim da área de css dos cards de conquistas*/
+.user-info-line {
+    margin-bottom: 15px;
+    /* Adiciona um espaço entre as informações e a barra de XP */
+    font-size: 16px;
+}
 
 
+/* Estilos para a nova Barra de XP (Removemos .xpbarimage, .xpbarclass, .xpbartext) */
 
-/*  -------------
-    -------------
-    TO DO LIST (COMECO)
-    -------------
-    ------------- */
+.xp-bar-container {
+    width: 90%;
+    /* Largura considerável, relativa ao container pai .menutxt */
+    height: 22px;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    border: 1px solid #c0c0c0;
+    position: relative;
+    /* Necessário para posicionar o texto e a barra de preenchimento */
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    /* Garante que a barra de preenchimento fique dentro das bordas arredondadas */
+}
 
+.xp-bar-fill {
+    width: 0%;
+    /* O JavaScript controlará esta largura */
+    height: 100%;
+    background-color: #00bcd4;
+    /* Cor azul-turquesa, similar à imagem */
+    border-radius: 15px;
+    transition: width 0.5s ease-in-out;
+    /* Animação suave ao ganhar XP */
+}
 
-#overlay {
+.xp-bar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #fff;
+    /* Sombra para melhor legibilidade */
+}
+
+.conquistas-section {
+    width: 100%;
+    /* Faz a seção ocupar toda a largura disponível */
+    margin-top: 30px;
+    /* Adiciona espaço acima da seção de conquistas */
+    flex-basis: 100%;
+    /* Garante que esta seção quebre para a próxima linha no layout flex */
+}
+
+.conquistas-title {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #444;
+    /* Adiciona uma linha sutil abaixo do título */
+    padding-bottom: 5px;
+}
+
+.card-heading,
+.card-body {
+    overflow: visible;
+    /* Permite que o conteúdo transborde */
+    text-overflow: clip;
+    /* Remove o corte com "..." */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: white;
+    white-space: normal;
+    /* ESSENCIAL: permite que o texto quebre para a próxima linha */
+    line-height: 1.3;
+    /* Melhora a legibilidade do texto com mais de uma linha */
+}
+
+.card-body {
+    font-size: 12px;
+}
+
+.card-heading {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Estilos dos Tiers de Conquistas */
+
+.card.bronze {
+    background: linear-gradient(145deg, #cd7f32, #a06428);
+    border: 1px solid #b9742d;
+}
+
+.card.silver {
+    background: linear-gradient(145deg, #c0c0c0, #a8a8a8);
+    border: 1px solid #b2b2b2;
+}
+
+.card.gold {
+    background: linear-gradient(145deg, #ffd700, #d4b400);
+    border: 1px solid #e0c000;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* Ajuste no ícone para contrastar melhor com os novos fundos */
+.card .card-image {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.card.diamond {
+    background: linear-gradient(135deg, #e0f7fa 0%, #ffffff 50%, #b2ebf2 100%);
+    border: 1px solid #a7dcdf;
+    box-shadow: 0 0 15px rgba(0, 230, 230, 0.6), 0 0 5px rgba(255, 255, 255, 0.8) inset;
+    position: relative;
+    overflow: visible;
+    /* Permite que o brilho se espalhe */
+}
+
+/* Adiciona um texto com cor e sombra especiais */
+.card.diamond .card-heading,
+.card.diamond .card-body {
+    color: #004d40;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* Adiciona um brilho sutil no ícone */
+.card.diamond .card-image {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.dia-content-wrapper {
+    flex-grow: 1;
+    /* Faz este elemento ocupar todo o espaço vertical restante */
+    position: relative;
+    /* Necessário para o posicionamento do filho */
+    min-height: 0;
+    /* Correção CRUCIAL para o scroll funcionar dentro de um flex container */
+}
+
+/* O container de tarefas agora pode usar 100% da altura do seu novo pai (o wrapper) */
+.tarefas-container-mes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ocupa toda a altura do wrapper */
+    overflow-y: auto;
+    /* A barra de rolagem aparecerá aqui */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ========================= */
+/* TUTORIAL--COMEÇO     */
+/* ========================= */
+
+.welcome-overlay,
+.tutorial-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -728,239 +870,257 @@ Fim da área de css dos cards de conquistas*/
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     display: none;
-    z-index: 999;
-    pointer-events: none;
-}
-
-
-.btn-add {
-    background-color: black;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
+    /* Começa escondido */
     align-items: center;
-    cursor: pointer;
-    font-weight: bold;
-    height: 60px;
-    width: 130px;
+    justify-content: center;
+    z-index: 2000;
+    /* Garante que fique acima de tudo */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.btn-add::before {
-    content: "+";
-    font-size: 40px;
-    margin-right: 10px;
+.welcome-overlay.active,
+.tutorial-overlay.active {
+    display: flex;
+    /* Mostra o elemento quando ativo */
+    opacity: 1;
+    visibility: visible;
 }
 
-.toggle {
-    width: 50px;
-    height: 30px;
-    border-radius: 20px;
-    border: 2px solid rgb(255, 255, 255);
-    background-color: transparent;
+.welcome-card,
+.tutorial-carousel {
     position: relative;
-    z-index: 1000;
-    cursor: pointer;
-    right: 1rem;
-
-}
-
-.toggle::before {
-    content: "";
-    width: 18px;
-    height: 18px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 50%;
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    transition: left 0.3s;
-}
-
-.toggle.active::before {
-    left: 25px;
-}
-
-.todo-container {
-    background-color: #4f4f4f;
-    padding: 20px;
-    border-radius: 10px;
     width: 90%;
-    position: absolute;
-    margin-top: 20px;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-    /* Centraliza horizontalmente */
-    height: auto;
-    z-index: 1001;
+    max-width: 500px;
+    /* Keeping welcome-card narrower */
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(30px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
-.todo-container h2,
-.todo-container h3 {
-
-    color: white;
+.tutorial-carousel {
+    max-width: 800px;
+    /* Increased from 700px */
+    width: 90%;
+    /* Ensure it's responsive on smaller screens */
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+.welcome-overlay.active .welcome-card,
+.tutorial-overlay.active .tutorial-carousel {
+    transform: translateY(0) scale(1);
+    opacity: 1;
 }
 
-li {
-    background-color: #5a5a5a;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: white;
+.welcome-content {
+    text-align: center;
+    padding: 30px;
 }
 
-.completed span {
-    text-decoration: line-through;
+.welcome-content h2 {
+    color: #1E0E45;
+    margin-bottom: 15px;
 }
 
-.completed .task-checkbox:checked::after {
-    text-decoration: none;
-}
-
-.options {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.task-checkbox {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #fffefe;
-    cursor: pointer;
-    background-color: #5a5a5a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.task-checkbox:checked {
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.task-checkbox:checked::after {
-    content: "✔";
-    color: black;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-#task-name {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 90%
-}
-
-#confirm-task {
-    background-color: #4CAF50;
-    color: white;
-    margin-right: 3px;
-    display: wrap;
-    width: 50px;
-    height: 40px;
-
-}
-
-#cancel-task {
-    background-color: #f44336;
-    color: white;
-    display: wrap;
-    width: 50px;
-    height: 40px;
-
-}
-
-.edit-input {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-.task-buttons {
-    display: flex;
-    gap: 10px;
-    
-}
-
-.save-btn,
-.cancel-btn {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
-}
-
-.save-btn {
-    background-color: #4CAF50;
-    color: white;
-    margin-right: 10px;
-
-}
-
-.cancel-btn {
-    background-color: #f44336;
-    color: white;
-}
-
-.titulotodolist {
-    margin-top: 10px;
+.welcome-content p {
+    color: #666;
     margin-bottom: 25px;
-    font-size: 1.7rem;
 }
 
-.task-item {
+.welcome-buttons,
+.carousel-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.close-welcome,
+.close-tutorial {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease;
 }
 
-.edit-options {
-    display: flex;
-    gap: 10px;
+.close-welcome:hover,
+.close-tutorial:hover {
+    background-color: #e0e0e0;
+}
+
+.close-welcome::before,
+.close-tutorial::before,
+.close-tutorial::after {
+    content: '';
     position: absolute;
-    right: 60px;
-}
-.edit-task {
-    width: 50px;
-}
-
-.delete-task {
-    width: 50px;
+    width: 15px;
+    height: 2px;
+    background-color: #666;
 }
 
-.options {
+.close-welcome::before,
+.close-tutorial::before {
+    transform: rotate(45deg);
+}
+
+.close-welcome::after,
+.close-tutorial::after {
+    transform: rotate(-45deg);
+}
+
+.carousel-slides {
     position: relative;
+    width: 100%;
+    height: 450px;
+    /* Increased height */
+    overflow: hidden;
 }
 
-/*  -------------
-    -------------
-    TO DO LIST (FIM)
-    -------------
-    ------------- */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Keep this for overall centering */
+    padding: 20px;
+    /* Adjust padding as needed */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.slide.active {
+    display: flex;
+    opacity: 1;
+}
+
+.slide h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    /* Keep space below title */
+    /* Add a top margin to push title down if needed, or adjust padding on .slide */
+    margin-top: 0;
+    /* Ensure no default browser margin pushes it too far */
+}
+
+.slide p {
+    text-align: center;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Ensure images within slides are responsive and fit well */
+.slide img {
+    max-width: 100%;
+    height: auto;
+    /* Maintain aspect ratio */
+    display: block;
+    /* Remove extra space below image */
+    /* Adjust this margin to move the image down relative to the text */
+    margin-top: 20px;
+    /* Increased from 10px to create more space from text above */
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+}
+
+/* This is a crucial adjustment to balance spacing for slides with content at the top */
+/* For slides with content that should be visually centered (like the last slide),
+   and for slides with images where the title shouldn't be too high,
+   we need to ensure there's enough top padding on the slide itself or adjust the alignment.
+   Let's ensure the padding of the slide itself is good, and the image pushes down.
+*/
+.slide:not(:has(img)) {
+    /* If a slide doesn't have an image, let's ensure its content is still vertically centered */
+    justify-content: center;
+}
+
+.slide:has(img) {
+    /* For slides that DO have an image, let's start content from the top
+       and use margins to space things out.
+    */
+    justify-content: flex-start;
+    /* Aligns content to the top */
+    padding-top: 30px;
+    /* Add more top padding to push content down */
+}
+
+/* Override .slide h3 margin for img slides to push it down further from the top of the slide */
+.slide:has(img) h3 {
+    margin-top: 0;
+    /* Reset previous margin-top */
+    margin-bottom: 10px;
+}
+
+
+.carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+
+.carousel-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background-color: #1E0E45;
+    transform: scale(1.2);
+}
+
+
+.btn-skip {
+    background-color: transparent;
+    color: #666;
+}
+
+.btn-skip:hover {
+    background-color: #f0f0f0;
+}
+
+.btn-prev {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-prev:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+/* ========================= */
+/* TUTORIAL--FIM       */
+/* ========================= */
+.slide h3,
+.slide p {
+    text-align: center;
+    color: #333;
+}
