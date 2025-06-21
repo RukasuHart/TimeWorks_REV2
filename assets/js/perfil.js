@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchUserData() {
         try {
-            // ▼▼ ADICIONE ESTA LINHA PARA GARANTIR QUE A LISTA MESTRA DE CONQUISTAS SEJA CARREGADA ▼▼
-            if (typeof fetchAllAchievements === 'function') {
+             if (typeof fetchAllAchievements === 'function') {
                 await fetchAllAchievements();
             }
 

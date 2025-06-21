@@ -1,8 +1,7 @@
 let allAchievements = [];
 
 async function fetchAllAchievements() {
-    // Evita buscar múltiplas vezes sem necessidade
-    if (allAchievements.length > 0) return;
+     if (allAchievements.length > 0) return;
     try {
         const response = await fetch('http://localhost:3000/achievements');
         if (!response.ok) {
@@ -40,12 +39,10 @@ async function unlockAchievement(achievementId, userData) {
 
 
 function renderUserAchievements(userData) {
-    // --- INÍCIO DO CÓDIGO DE DEBUG ---
-    console.log("--- Iniciando renderização de conquistas ---");
+     console.log("--- Iniciando renderização de conquistas ---");
     console.log("Dados do usuário para renderizar:", userData.unlockedAchievements);
     console.log("Lista mestre de conquistas disponível:", allAchievements);
-    // --- FIM DO CÓDIGO DE DEBUG ---
-
+ 
     const container = document.getElementById('conquistas-container');
     if (!container) return;
 
@@ -73,8 +70,7 @@ function renderUserAchievements(userData) {
             `;
             container.appendChild(card);
         } else {
-            // Log para nos dizer se uma conquista específica não foi encontrada na lista mestre
-            console.warn(`Conquista com ID ${id} não encontrada na lista 'allAchievements'.`);
+             console.warn(`Conquista com ID ${id} não encontrada na lista 'allAchievements'.`);
         }
     });
 }
@@ -122,5 +118,4 @@ async function checkAllAchievements(userData, userTasks) {
 
 }
 
-// Carrega a lista de conquistas na primeira vez que o script é lido
-fetchAllAchievements();
+ fetchAllAchievements();

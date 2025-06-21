@@ -67,7 +67,7 @@ async function carregarTodoTasks(callback) {
         callback?.();
     } catch (error) {
         console.error('Erro ao carregar To-do Tasks:', error);
-        todo_tasks = []; // Garante que a lista esteja vazia em caso de erro
+        todo_tasks = []; 
     }
 }
 
@@ -84,7 +84,7 @@ async function adicionarTodoTask(text) {
             body: JSON.stringify(novaTask)
         });
         if (!response.ok) throw new Error('Falha ao adicionar a tarefa');
-        recarregarTudo(); // Recarrega e redesenha tudo
+        recarregarTudo();  
     } catch (error) {
         console.error('Erro em adicionarTodoTask:', error);
     }
@@ -116,14 +116,12 @@ async function excluirTodoTask(taskId) {
     }
 }
 
-// Uma função central para recarregar todos os dados e atualizar a UI
-function recarregarTudo() {
+ function recarregarTudo() {
     carregaDadosJSONServer(() => {
         if (typeof atualizarCalendario === 'function') {
             atualizarCalendario();
         }
-        // Se a to-do list estiver visível, recria ela com os novos dados
-        if (document.getElementById('todolist')?.classList.contains('active')) {
+          if (document.getElementById('todolist')?.classList.contains('active')) {
             createTodoList();
         }
     });
@@ -131,8 +129,7 @@ function recarregarTudo() {
 
 async function carregaDadosJSONServer(callback) {
     try {
-        // Carrega as tarefas do calendário (código existente)
-        let response = await fetch(`${urlTarefas}?userId=${currentLoggedInUserId}`);
+         let response = await fetch(`${urlTarefas}?userId=${currentLoggedInUserId}`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         tarefas = await response.json();
 
@@ -143,11 +140,9 @@ async function carregaDadosJSONServer(callback) {
             tarefas = await response.json();
         }
         
-        // Carrega as tarefas da to-do list
-        await carregarTodoTasks();
+         await carregarTodoTasks();
 
-        // Atualiza os componentes da UI
-        if (typeof htmlSequenciaTarefas === 'function') htmlSequenciaTarefas();
+         if (typeof htmlSequenciaTarefas === 'function') htmlSequenciaTarefas();
         if (typeof htmlPrioridadeTarefas === 'function') htmlPrioridadeTarefas();
         callback?.();
 

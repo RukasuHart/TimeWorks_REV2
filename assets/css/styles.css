@@ -1,5 +1,3 @@
-/* Formatações gerais */
-
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +10,6 @@ body {
     overflow-y: scroll;
 }
 
-/* Cabeçalho */
 
 header img {
     width: 50%;
@@ -76,7 +73,6 @@ nav p {
     height: 50px;
 }
 
-/* Corpo/Conteúdo principal */
 
 
 main {
@@ -97,7 +93,6 @@ main {
 .cardDiaCalendario {
     display: flex;
     flex-direction: column;
-    /* Organiza os itens (número e conteúdo) em uma coluna */
     background-color: whitesmoke;
     padding: 5px;
     border: solid 0.1rem #150A35;
@@ -126,7 +121,6 @@ main {
     font-size: small;
 }
 
-/* Barra lateral */
 
 aside {
     width: 20%;
@@ -232,9 +226,7 @@ aside {
     background: linear-gradient(180deg, #5a6fd8 0%, #6a4190 100%);
 }
 
-/*Botão de abrir pddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddopup*/
 
-/*Botão de abrir popup*/
 .openmodal {
     background: none;
     border: none;
@@ -254,19 +246,13 @@ aside {
 
 dialog {
     width: 65%;
-    /* Aumenta a largura padrão para 65% da tela */
     max-width: 900px;
-    /* Define uma largura máxima para telas muito grandes */
     height: auto;
-    /* A altura se ajustará ao conteúdo */
     min-height: 500px;
-    /* Garante uma altura mínima para o conteúdo caber */
     max-height: 85vh;
-    /* Impede que o modal seja mais alto que a tela */
     border: none;
     border-radius: 12px;
     padding: 25px 35px;
-    /* Aumenta um pouco o espaçamento interno */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -275,13 +261,11 @@ dialog {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     z-index: 999;
     overflow-y: auto;
-    /* Adiciona rolagem interna se o conteúdo for muito extenso */
 }
 
 @media (max-width: 768px) {
     dialog {
         width: 92vw;
-        /* Em telas pequenas, o modal ocupará quase toda a largura */
         padding: 20px;
     }
 }
@@ -299,49 +283,36 @@ dialog::backdrop {
 }
 
 
-/* Edita a área de informações do usuário */
 .menutxt {
     display: flex;
     flex-direction: column;
-    /* Keep as column to stack the info line and xp bar */
     align-items: center;
-    /* Center items horizontally within menutxt */
     gap: 10px;
     margin-top: 5px !important;
     margin-left: auto;
     margin-right: auto;
     max-width: 500px;
     text-align: center;
-    /* Center overall text within the menutxt div */
     padding: 15px;
 }
 
 .user-info-line {
-    /* New style for the single line of user info */
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Center the entire line horizontally */
     flex-wrap: wrap;
-    /* Allow wrapping on very small screens if needed */
     gap: 8px;
-    /* Space between each info segment including the separator */
     font-size: 18px;
-    /* A default size for all text in this line */
     color: black;
     white-space: nowrap;
-    /* Prevent line breaks within the info line */
 }
 
 .separator {
     color: black;
-    /* Ensure separator color is visible */
     font-size: 18px;
     margin: 0 2px;
-    /* Small horizontal margin for the bullet */
 }
 
-/* Edita o botão de fechar */
 #alinharbotaoclose {
     display: flex;
     justify-content: flex-end;
@@ -370,30 +341,24 @@ dialog::backdrop {
 
 .username {
     font-size: 20px;
-    /* Slightly larger for username */
     color: black;
     margin: 0;
-    /* Remove previous margins */
 }
 
 .userid,
 #userlevel,
 .userxp {
     font-size: 18px;
-    /* Consistent font size for ID, Level, XP */
     color: black;
     margin: 0;
-    /* Remove previous margins */
 }
 
-/*Edita o botão X que fecha o popup da página de perfil*/
 .buttonclose {
     max-width: 10px;
     background: none;
     border: none;
 }
 
-/*Edita especificamente a imagem X e suas propriedades*/
 .buttonclose .btnc {
     width: 15px;
     background-color: transparent;
@@ -419,11 +384,8 @@ dialog::backdrop {
     max-width: 400px;
     position: relative;
     box-sizing: border-box;
-    /* Garante que o padding não afete a largura total */
     max-height: 90vh;
-    /* Define uma altura máxima de 90% da tela */
     overflow-y: auto;
-    /* Adiciona uma barra de rolagem vertical SE necessário */
 }
 
 .edit-input {
@@ -472,9 +434,7 @@ dialog::backdrop {
 
 .card {
     min-height: 60px;
-    /* Define uma altura MÍNIMA, permitindo que o card cresça */
     padding: 10px;
-    /* Aumenta o espaçamento interno */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     background: #555555;
     color: white;
@@ -503,21 +463,17 @@ dialog::backdrop {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    /* Adiciona um pequeno espaço entre o título e a descrição */
 }
 
 .card-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Define o layout com 3 colunas */
     gap: 15px;
-    /* Aumenta o espaço entre os cards */
     padding: 10px;
     width: 100%;
     box-sizing: border-box;
 }
 
-/* Edita o botão de lápis que abre a caixa de editar o perfil */
 .profile-edit {
     position: absolute;
     bottom: 70px;
@@ -525,7 +481,6 @@ dialog::backdrop {
     left: 20px;
 }
 
-/* Edita a posição do botão de edição */
 #edit-profile-btn {
     background: none;
     border: none;
@@ -538,14 +493,12 @@ dialog::backdrop {
     transform: scale(1.1);
 }
 
-/* Edita a imagem do botão de edição */
 .edit-btn-img {
     width: 45px;
     height: auto;
     border-radius: 100%;
 }
 
-/* Edita do popup de edição */
 .edit-modal {
     display: none;
     position: fixed;
@@ -559,7 +512,6 @@ dialog::backdrop {
     align-items: center;
 }
 
-/* Edita o que está dentro do modal de edição */
 .edit-modal-content {
     background-color: #fefefe;
     padding: 20px;
@@ -569,7 +521,6 @@ dialog::backdrop {
     position: relative;
 }
 
-/* Edita do botão de fechar o popup */
 .close-edit-modal {
     position: absolute;
     top: 10px;
@@ -582,12 +533,10 @@ dialog::backdrop {
     transition: 0.4s;
 }
 
-/* Edita dos grupos de formulário no popup */
 .form-group {
     margin-bottom: 15px;
 }
 
-/* Edita dos campos de entrada no modal */
 .edit-input {
     width: 100%;
     padding: 8px;
@@ -596,7 +545,6 @@ dialog::backdrop {
     border-radius: 4px;
 }
 
-/* Edita o botão de salvar alterações */
 #save-changes-btn {
     background-color: gray;
     color: white;
@@ -614,11 +562,9 @@ dialog::backdrop {
     background-color: rgb(110, 110, 110);
 }
 
-/* Edita as opções de imagem de perfil */
 .profile-pic-options {
     display: flex;
     flex-wrap: wrap;
-    /* ESSENCIAL: Permite que os itens quebrem para a próxima linha */
     gap: 15px;
     margin-top: 10px;
     justify-content: center;
@@ -638,7 +584,6 @@ dialog::backdrop {
     transform: scale(1.1);
 }
 
-/* Edita os efeitos de imagem de perfil selecionada */
 .profile-option.selected {
     border-color: #000000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -650,7 +595,6 @@ dialog::backdrop {
 }
 
 
-/* Botão posicionado sob a imagem, levemente à direita */
 #edit-profile-btn {
     position: absolute;
     bottom: -12px;
@@ -663,7 +607,6 @@ dialog::backdrop {
     cursor: pointer;
 }
 
-/* Ícone do lápis */
 .edit-btn-img {
     width: 100%;
     height: 100%;
@@ -671,7 +614,6 @@ dialog::backdrop {
     border-radius: 50%;
 }
 
-/* Cabeçalho de Login */
 .login-header {
     background-color: #1E0E45;
     padding: 15px;
@@ -681,53 +623,41 @@ dialog::backdrop {
 
 .login-header img {
     max-height: 80px;
-    /* Ajuste o tamanho da logo conforme necessário */
     width: auto;
 }
 
-/*aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa*/
 
-/* Ajustes no container de informações do usuário para melhor posicionamento da barra */
 .menutxt {
     width: 100%;
     max-width: 400px;
-    /* Aumenta a largura máxima para a barra ter mais espaço */
     padding-top: 10px;
 }
 
 .user-info-line {
     margin-bottom: 15px;
-    /* Adiciona um espaço entre as informações e a barra de XP */
     font-size: 16px;
 }
 
 
-/* Estilos para a nova Barra de XP (Removemos .xpbarimage, .xpbarclass, .xpbartext) */
 
 .xp-bar-container {
     width: 90%;
-    /* Largura considerável, relativa ao container pai .menutxt */
     height: 22px;
     background-color: #e0e0e0;
     border-radius: 15px;
     border: 1px solid #c0c0c0;
     position: relative;
-    /* Necessário para posicionar o texto e a barra de preenchimento */
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
-    /* Garante que a barra de preenchimento fique dentro das bordas arredondadas */
 }
 
 .xp-bar-fill {
     width: 0%;
-    /* O JavaScript controlará esta largura */
     height: 100%;
     background-color: #00bcd4;
-    /* Cor azul-turquesa, similar à imagem */
     border-radius: 15px;
     transition: width 0.5s ease-in-out;
-    /* Animação suave ao ganhar XP */
 }
 
 .xp-bar-text {
@@ -739,16 +669,12 @@ dialog::backdrop {
     font-size: 12px;
     font-weight: bold;
     text-shadow: 1px 1px 2px #fff;
-    /* Sombra para melhor legibilidade */
 }
 
 .conquistas-section {
     width: 100%;
-    /* Faz a seção ocupar toda a largura disponível */
     margin-top: 30px;
-    /* Adiciona espaço acima da seção de conquistas */
     flex-basis: 100%;
-    /* Garante que esta seção quebre para a próxima linha no layout flex */
 }
 
 .conquistas-title {
@@ -757,24 +683,19 @@ dialog::backdrop {
     margin-bottom: 15px;
     font-size: 1.2rem;
     border-bottom: 1px solid #444;
-    /* Adiciona uma linha sutil abaixo do título */
     padding-bottom: 5px;
 }
 
 .card-heading,
 .card-body {
     overflow: visible;
-    /* Permite que o conteúdo transborde */
     text-overflow: clip;
-    /* Remove o corte com "..." */
     width: 100%;
     margin: 0;
     padding: 0;
     color: white;
     white-space: normal;
-    /* ESSENCIAL: permite que o texto quebre para a próxima linha */
     line-height: 1.3;
-    /* Melhora a legibilidade do texto com mais de uma linha */
 }
 
 .card-body {
@@ -786,7 +707,6 @@ dialog::backdrop {
     font-weight: bold;
 }
 
-/* Estilos dos Tiers de Conquistas */
 
 .card.bronze {
     background: linear-gradient(145deg, #cd7f32, #a06428);
@@ -804,7 +724,6 @@ dialog::backdrop {
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-/* Ajuste no ícone para contrastar melhor com os novos fundos */
 .card .card-image {
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
@@ -817,17 +736,14 @@ dialog::backdrop {
     box-shadow: 0 0 15px rgba(0, 230, 230, 0.6), 0 0 5px rgba(255, 255, 255, 0.8) inset;
     position: relative;
     overflow: visible;
-    /* Permite que o brilho se espalhe */
 }
 
-/* Adiciona um texto com cor e sombra especiais */
 .card.diamond .card-heading,
 .card.diamond .card-body {
     color: #004d40;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
 }
 
-/* Adiciona um brilho sutil no ícone */
 .card.diamond .card-image {
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
@@ -836,30 +752,21 @@ dialog::backdrop {
 
 .dia-content-wrapper {
     flex-grow: 1;
-    /* Faz este elemento ocupar todo o espaço vertical restante */
     position: relative;
-    /* Necessário para o posicionamento do filho */
     min-height: 0;
-    /* Correção CRUCIAL para o scroll funcionar dentro de um flex container */
 }
 
-/* O container de tarefas agora pode usar 100% da altura do seu novo pai (o wrapper) */
 .tarefas-container-mes {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* Ocupa toda a altura do wrapper */
     overflow-y: auto;
-    /* A barra de rolagem aparecerá aqui */
     display: flex;
     flex-direction: column;
 }
 
-/* ========================= */
-/* TUTORIAL--COMEÇO     */
-/* ========================= */
 
 .welcome-overlay,
 .tutorial-overlay {
@@ -870,11 +777,9 @@ dialog::backdrop {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     display: none;
-    /* Começa escondido */
     align-items: center;
     justify-content: center;
     z-index: 2000;
-    /* Garante que fique acima de tudo */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -883,7 +788,6 @@ dialog::backdrop {
 .welcome-overlay.active,
 .tutorial-overlay.active {
     display: flex;
-    /* Mostra o elemento quando ativo */
     opacity: 1;
     visibility: visible;
 }
@@ -893,7 +797,6 @@ dialog::backdrop {
     position: relative;
     width: 90%;
     max-width: 500px;
-    /* Keeping welcome-card narrower */
     background-color: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -904,9 +807,7 @@ dialog::backdrop {
 
 .tutorial-carousel {
     max-width: 800px;
-    /* Increased from 700px */
     width: 90%;
-    /* Ensure it's responsive on smaller screens */
 }
 
 .welcome-overlay.active .welcome-card,
@@ -983,7 +884,6 @@ dialog::backdrop {
     position: relative;
     width: 100%;
     height: 450px;
-    /* Increased height */
     overflow: hidden;
 }
 
@@ -997,9 +897,7 @@ dialog::backdrop {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Keep this for overall centering */
     padding: 20px;
-    /* Adjust padding as needed */
     opacity: 0;
     transition: opacity 0.5s ease;
 }
@@ -1013,10 +911,7 @@ dialog::backdrop {
     text-align: center;
     color: #333;
     margin-bottom: 10px;
-    /* Keep space below title */
-    /* Add a top margin to push title down if needed, or adjust padding on .slide */
     margin-top: 0;
-    /* Ensure no default browser margin pushes it too far */
 }
 
 .slide p {
@@ -1096,9 +991,6 @@ dialog::backdrop {
     cursor: not-allowed;
 }
 
-/* ========================= */
-/* TUTORIAL--FIM       */
-/* ========================= */
 .slide h3,
 .slide p {
     text-align: center;
@@ -1178,16 +1070,13 @@ main.calendar-hidden {
 todolist-wrapper {
     display: none;
     background-color: #1E0E45;
-    /* Fundo similar ao da barra lateral */
     color: white;
 }
 
-/* Quando a classe 'active' for adicionada, mostra a To-do List */
 .todolist-wrapper.active {
     display: block;
 }
 
-/* Estilos para o conteúdo da To-do List que será gerado */
 .todo-container {
     padding: 15px;
 }
@@ -1229,19 +1118,12 @@ todolist-wrapper {
     border-color: #3a2a5a;
 }
 
-/* =================================================== */
-/* CORREÇÕES DE LAYOUT E ESTILO PARA A TO-DO LIST     */
-/* =================================================== */
 
-/* 1. FAZ O NOVO WRAPPER CONTROLAR O POSICIONAMENTO */
-/* 1. FAZ O NOVO WRAPPER CONTROLAR O POSICIONAMENTO */
 .content-flipper {
     position: relative;
     flex-grow: 1;
-    /* Garante que o flipper ocupe o espaço */
 }
 
-/* 2. FAZ O CALENDÁRIO E A TODOLIST SE SOBREPOREM CORRETAMENTE */
 .content-flipper>main,
 .content-flipper>.todolist-wrapper {
     position: absolute;
@@ -1251,32 +1133,25 @@ todolist-wrapper {
     height: 100%;
 }
 
-/* 3. CONTROLE DE CAMADAS (A CORREÇÃO PRINCIPAL) */
-
-/* Por padrão, o calendário fica na frente */
 .content-flipper>main {
     z-index: 10;
 }
 
 .content-flipper>.todolist-wrapper {
     z-index: 5;
-    /* A to-do list fica atrás */
 }
 
-/* Quando a to-do list está ativa, ela vem para a frente */
 .content-flipper>.todolist-wrapper.active {
     z-index: 15;
 }
 
 
-/* 4. ESTILOS QUE FALTAVAM PARA O CONTEÚDO DA TO-DO LIST (MANTENHA ESTES) */
-/* O contêiner principal que é gerado pelo JS */
 .todo-container {
     background-color: #1E0E45;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
     height: 100%;
-    color: white;
+    color: #f0f0f0;
     position: relative;
     overflow-y: auto;
     display: flex;
@@ -1284,11 +1159,12 @@ todolist-wrapper {
 }
 
 .todo-container .titulotodolist {
-    text-align: center;
+    text-align: left;
+    color: white;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
-/* Ajusta o botão 'Adicionar' */
 .todo-container .btn-add {
     background-color: #6a0dad;
     color: white;
@@ -1298,10 +1174,8 @@ todolist-wrapper {
     cursor: pointer;
     margin-bottom: 15px;
     align-self: flex-start;
-    /* Alinha o botão à esquerda */
 }
 
-/* Estilos para as listas e itens */
 .todo-container ul {
     list-style: none;
     padding: 0;
@@ -1309,46 +1183,172 @@ todolist-wrapper {
 
 .todo-container li {
     background-color: #2a1a4a;
-    padding: 10px;
+    color: #f0f0f0;
+    padding: 12px 15px;
     margin-bottom: 8px;
-    border-radius: 4px;
+    border-radius: 6px;
+    border-left: 3px solid transparent;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* Espaça o conteúdo do item */
-    gap: 10px;
+    gap: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.todo-container li:hover {
+    background-color: #3a2a5a;
+    border-left-color: #6a0dad;
 }
 
 .todo-container li.completed {
+    background-color: #2a1a4a;
+    text-decoration: none;
+    opacity: 0.5;
+}
+
+.todo-container li.completed .task-text {
     text-decoration: line-through;
-    opacity: 0.6;
 }
 
-/* Separador entre listas de tarefas */
-.todo-container .divider-todolist {
-    margin: 20px 0;
-    border-color: #3a2a5a;
+
+.task-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #888;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
 }
 
-/* Formulário para adicionar/editar tarefas */
-.task-form,
-.task-buttons {
+.task-checkbox:checked {
+    background-color: #6a0dad;
+    border-color: #6a0dad;
+}
+
+.task-checkbox:checked::after {
+    content: "✔";
+    color: white;
+    font-size: 14px;
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
-.edit-input,
-#task-name {
-    flex-grow: 1;
+.options {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.options:hover {
+    color: white;
+}
+
+.edit-options {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.edit-options button {
+    background: transparent;
+    color: #aaa;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.edit-options button:hover {
     background-color: #3a2a5a;
-    border: 1px solid #6a0dad;
+    color: white;
+}
+
+#task-name,
+.edit-input {
+    flex-grow: 1;
+    background-color: #150A35;
+    border: 1px solid #3a2a5a;
     color: white;
     border-radius: 4px;
     padding: 8px;
 }
 
-.edit-options {
+#task-name:focus,
+.edit-input:focus {
+    outline: none;
+    border-color: #6a0dad;
+}
+
+#confirm-task,
+#cancel-task {
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+#confirm-task {
+    background-color: #4CAF50;
+}
+
+#cancel-task {
+    background-color: #f44336;
+}
+
+#confirm-task:hover,
+#cancel-task:hover {
+    opacity: 0.8;
+}
+
+.todo-container .divider-todolist {
+    border-color: #3a2a5a;
+}
+
+.save-btn,
+.cancel-btn {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.save-btn {
+    background-color: #4CAF50;
+}
+
+.cancel-btn {
+    background-color: #555;
+}
+
+
+.task-form {
     display: flex;
-    gap: 5px;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.task-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

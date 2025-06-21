@@ -22,8 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         atualizarCalendario();
 
-        // --- CÓDIGO MOVIDO PARA DENTRO DO SETTIMEOUT ---
-        console.log("Tentando adicionar listener APÓS atualizar calendário...");
+         console.log("Tentando adicionar listener APÓS atualizar calendário...");
 
         const todolistToggle = document.getElementById('todolist-toggle');
         const mainCalendar = document.querySelector('main');
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Elemento do Calendário (main) encontrado:", mainCalendar);
 
         if (todolistToggle && mainCalendar) {
-            const todolistWrapper = document.getElementById('todolist'); // Seleciona o novo container
+            const todolistWrapper = document.getElementById('todolist');  
 
             if (!todolistToggle.hasListener) {
                 todolistToggle.addEventListener('change', function () {
@@ -41,29 +40,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.log(`--- CLIQUE NO TOGGLE ---`);
                     console.log(`O estado do switch agora é: ${isChecked ? 'ATIVADO' : 'DESATIVADO'}`);
 
-                    // --- Lógica do Calendário ---
-                    mainCalendar.classList.toggle('calendar-hidden', isChecked);
+                     mainCalendar.classList.toggle('calendar-hidden', isChecked);
                     console.log(`Classes no elemento <main>: ${mainCalendar.className}`);
 
-                    // --- Lógica da To-do List ---
-                    if (todolistWrapper) {
+                     if (todolistWrapper) {
                         todolistWrapper.classList.toggle('active', isChecked);
                         console.log(`Classes no wrapper #todolist: ${todolistWrapper.className}`);
 
                         if (isChecked) {
                             console.log('Tentando criar a To-do List...');
-                            // Verifica os dados que vieram do app.js
-                            console.log('Dados disponíveis em "todo_tasks":', todo_tasks);
+                             console.log('Dados disponíveis em "todo_tasks":', todo_tasks);
 
-                            // Chama a função principal de todolist.js
-                            createTodoList();
+                             createTodoList();
                             console.log('A função createTodoList() foi chamada.');
 
-                            // Verifica se algo foi realmente inserido no HTML
-                            console.log('Conteúdo do wrapper #todolist após a chamada:', todolistWrapper.innerHTML);
+                             console.log('Conteúdo do wrapper #todolist após a chamada:', todolistWrapper.innerHTML);
                         } else {
-                            // Limpa o conteúdo ao desativar
-                            todolistWrapper.innerHTML = '';
+                             todolistWrapper.innerHTML = '';
                             console.log('O wrapper #todolist foi limpo.');
                         }
                     } else {
@@ -75,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             console.error("ERRO: Não foi possível encontrar o toggle switch ou o elemento <main> do calendário.");
         }
-    }, 100); // O timeout original já estava aqui
+    }, 100);  
 });
 
 function loadCalendarioMensal() {
