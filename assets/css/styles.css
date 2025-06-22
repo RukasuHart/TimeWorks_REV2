@@ -7,7 +7,7 @@
 
 body {
     background-color: #150A35;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 
@@ -1122,6 +1122,7 @@ todolist-wrapper {
 .content-flipper {
     position: relative;
     flex-grow: 1;
+    overflow-x: hidden;
 }
 
 .content-flipper>main,

@@ -2,7 +2,7 @@ function htmlSequenciaTarefas() {
     let bgSequenciaTarefas = document.getElementById('sequenciaTarefas'); 
     bgSequenciaTarefas.classList.add("scrollbar"); 
 
-    bgSequenciaTarefas.style.overflowY = 'scroll'; 
+    bgSequenciaTarefas.style.overflowY = 'auto'; 
 
     bgSequenciaTarefas.innerHTML = `<div class="p-2 my-2 rounded text-white" style="position: sticky; top: 0; background-color: #1E0E45;">Tarefas realizadas em sequência:</div>`; 
 
