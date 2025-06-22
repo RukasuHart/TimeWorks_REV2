@@ -150,7 +150,7 @@ aside {
     height: 100%;
     display: grid;
     grid-template-rows: auto repeat(24, minmax(0, 1fr));
-    overflow: hidden !important;
+    overflow: auto !important;
     background-color: whitesmoke;
 }
 
@@ -1352,4 +1352,7 @@ todolist-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+#canvaCalendario::-webkit-scrollbar {
+    display: none;
 }

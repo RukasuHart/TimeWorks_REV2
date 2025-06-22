@@ -154,7 +154,7 @@ function configurarGridCalendario(elemento, colunas, linhas, classe) {
     elemento.innerHTML = "";
     elemento.style.gridTemplateColumns = colunas;
     elemento.style.gridTemplateRows = linhas;
-    elemento.style.overflow = "hidden";
+    elemento.style.overflow = "auto";
     elemento.className = classe || "";
 }
 

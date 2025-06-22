@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const logoutBtn = document.createElement('button');
     logoutBtn.textContent = 'Sair';
-    logoutBtn.classList.add('btn', 'btn-danger', 'ms-3');
+    logoutBtn.classList.add('btn', 'btn-danger', 'ms-auto');
     logoutBtn.addEventListener('click', logout);
     document.querySelector('header').appendChild(logoutBtn);
 });
